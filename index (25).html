@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f5f5">
+    <title>Tharun Kommaddi | Oracle APEX Developer</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-light: #f5f5f5;
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --text-dark: #0a0a0a;
+            --text-grey: #888888;
+            --border-light: rgba(0, 0, 0, 0.1);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --accent: #000;
+            --oracle-red: #F80000;
+        }
+
+        html {
+            overflow: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            transition: background 0.6s ease, color 0.6s ease;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* ANIMATED BACKGROUND */
+        .noise {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            width: 200%;
+            height: 200vh;
+            background: transparent url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>') repeat 0 0;
+            animation: grain 8s steps(10) infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            30% { transform: translate(3%, -15%); }
+            50% { transform: translate(12%, 9%); }
+            70% { transform: translate(9%, 4%); }
+            90% { transform: translate(-1%, 7%); }
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top, 20px));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 1px solid var(--border-light);
+            transition: all 0.4s ease;
+            animation: slideDown 0.8s ease-out;
+            max-width: calc(100vw - 40px);
+        }
+
+        .dark-mode header {
+            background: rgba(20, 20, 20, 0.8);
+            border-color: var(--border-dark);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav a {
+            color: var(--text-grey);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 4px;
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav a:hover {
+            color: var(--text-dark);
+        }
+
+        .dark-mode nav a:hover {
+            color: var(--text-light);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: calc(100% - 8px);
+        }
+
+        /* MODE TOGGLE */
+        .mode-toggle {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: max(30px, env(safe-area-inset-left, 30px));
+            z-index: 100;
+            min-width: 50px;
+            min-height: 50px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mode-toggle .fa-moon {
+            color: #FDB813;
+        }
+
+        .mode-toggle .fa-sun {
+            color: #FF6B35;
+        }
+
+        .mode-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-toggle:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .dark-mode .mode-toggle {
+            background: white;
+            color: black;
+        }
+
+        /* SECTIONS */
+        section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        section.active {
+            display: flex;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding-left: env(safe-area-inset-left, 0);
+            padding-right: env(safe-area-inset-right, 0);
+        }
+
+        /* Make About section scrollable */
+        #about {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
+        }
+
+        #about .container {
+            max-height: none;
+            padding-right: 0;
+            padding-top: 120px;
+            padding-bottom: 40px;
+        }
+
+        /* Style the About section scrollbar */
+        #about::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #about::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #about::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.3);
+            border-radius: 10px;
+        }
+
+        #about::-webkit-scrollbar-thumb:hover {
+            background: rgba(136, 136, 136, 0.5);
+        }
+        
+        #home .container,
+        #work .container,
+        #contact .container {
+            overflow-y: visible;
+            max-height: none;
+        }
+
+        /* HOME SECTION */
+        #home {
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 8vw, 120px);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(16px, 2.5vw, 28px);
+            color: var(--text-grey);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+            line-height: 1.5;
+        }
+
+        .dynamic-text {
+            display: inline-block;
+            color: var(--oracle-red);
+            padding: 8px 16px;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            margin-left: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dark-mode .dynamic-text {
+            color: #FF4444;
+            border-color: var(--border-dark);
+        }
+
+        .hero-description {
+            max-width: 700px;
+            margin: 40px auto 0;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.6;
+            color: var(--text-grey);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.9s forwards;
+        }
+
+        .location-info {
+            margin-top: 30px;
+            color: var(--text-grey);
+            font-size: clamp(14px, 1.5vw, 16px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .location-info span {
+            display: inline-block;
+        }
+
+        .location-info i {
+            margin-right: 6px;
+        }
+
+        .location-info .fa-map-marker-alt {
+            color: #FF4444;
+        }
+
+        .location-info .fa-graduation-cap {
+            color: #4CAF50;
+        }
+
+        .location-info .fa-briefcase {
+            color: #2196F3;
+        }
+
+        .location-item {
+            white-space: nowrap;
+        }
+
+        /* WORK SECTION */
+        #work {
+            background: rgba(0, 0, 0, 0.02);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
+            padding-top: 120px;
+        }
+
+        .dark-mode #work {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #work::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #work::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #work::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.3);
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: clamp(36px, 6vw, 80px);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            min-height: 350px;
+        }
+
+        .dark-mode .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-dark);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card:active {
+            transform: translateY(-5px) scale(1.01);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #F80000 0%, #C70000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 3vw, 24px);
+            color: white;
+            font-weight: 600;
+        }
+
+        .project-card:nth-child(2) .project-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .project-card:nth-child(3) .project-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .project-info h3 {
+            font-size: clamp(20px, 2.5vw, 24px);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .project-tech {
+            color: var(--oracle-red);
+            font-size: clamp(12px, 1.5vw, 13px);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .dark-mode .project-tech {
+            color: #FF4444;
+        }
+
+        .project-info p {
+            color: var(--text-grey);
+            line-height: 1.6;
+            font-size: clamp(14px, 1.8vw, 15px);
+        }
+
+        /* ABOUT SECTION */
+        .about-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.8;
+            color: var(--text-grey);
+        }
+
+        .experience-grid {
+            display: grid;
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .experience-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .dark-mode .experience-card {
+            background: transparent;
+        }
+
+        .experience-card:hover {
+            transform: translateX(5px);
+        }
+
+        .experience-card h3 {
+            font-size: clamp(22px, 3vw, 26px);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .experience-company {
+            color: var(--oracle-red);
+            font-size: clamp(14px, 2vw, 16px);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .experience-date {
+            color: var(--text-grey);
+            font-size: clamp(13px, 1.5vw, 14px);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .dark-mode .experience-company {
+            color: #FF4444;
+        }
+
+        .experience-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .experience-card li {
+            color: var(--text-grey);
+            line-height: 1.8;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            font-size: clamp(14px, 1.8vw, 15px);
+        }
+
+        .experience-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-grey);
+            font-size: 20px;
+        }
+
+        .skills-section {
+            margin-top: 60px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .skills-title {
+            font-size: clamp(26px, 4vw, 32px);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-tag {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50px;
+            font-size: clamp(13px, 1.5vw, 15px);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: skillFloat 3s ease-in-out infinite;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .dark-mode .skill-tag {
+            background: white;
+            color: black;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1) rotate(-3deg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .skill-tag:active {
+            transform: scale(0.95);
+        }
+
+        .skill-tag:nth-child(even) {
+            animation-delay: 0.5s;
+        }
+
+        .skill-tag:nth-child(3n) {
+            animation-delay: 1s;
+        }
+
+        @keyframes skillFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* CONTACT SECTION */
+        #contact {
+            background: rgba(0, 0, 0, 0.02);
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .dark-mode #contact {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-light);
+        }
+
+        #contact .section-title {
+            color: var(--text-dark);
+        }
+
+        .dark-mode #contact .section-title {
+            color: var(--text-light);
+        }
+
+        .contact-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 40px;
+            color: var(--text-grey);
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: clamp(16px, 2vw, 18px);
+            font-weight: 600;
+            transition: all 0.4s ease;
+            border: 2px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            min-width: 48px;
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .dark-mode .contact-btn {
+            background: white;
+            color: var(--accent);
+            border-color: white;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-btn:active {
+            transform: scale(0.98);
+        }
+
+        .contact-info {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-item {
+            opacity: 0.9;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .contact-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: clamp(12px, 1.5vw, 14px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-item a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            font-size: clamp(14px, 1.8vw, 16px);
+            word-break: break-all;
+        }
+
+        .contact-item a:hover {
+            opacity: 0.7;
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            z-index: 50;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* COOKIE NOTIFICATION */
+        .cookie-notification {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 40, 40, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 90;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: calc(100vw - 40px);
+        }
+
+        .cookie-notification.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(20px);
+        }
+
+        .dark-mode .cookie-notification {
+            background: rgba(240, 240, 240, 0.95);
+        }
+
+        .cookie-text {
+            color: #ffffff;
+            font-size: clamp(13px, 1.5vw, 14px);
+        }
+
+        .dark-mode .cookie-text {
+            color: #0a0a0a;
+        }
+
+        .cookie-text a {
+            color: #FF4444;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cookie-accept {
+            background: #FF4444;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: clamp(13px, 1.5vw, 14px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .cookie-accept:hover {
+            background: #FF6666;
+            transform: scale(1.05);
+        }
+
+        .cookie-accept:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .scroll-text {
+            font-size: clamp(13px, 1.5vw, 14px);
+            color: var(--text-grey);
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--text-grey);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-arrow::after {
+            content: '↓';
+            font-size: 18px;
+            color: var(--text-grey);
+        }
+
+        /* LOADING ANIMATION */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.6s ease;
+        }
+
+        .dark-mode .loader {
+            background: var(--bg-dark);
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-text {
+            font-size: clamp(40px, 10vw, 60px);
+            font-weight: 300;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* MAGNETIC CURSOR */
+        .magnetic-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--oracle-red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+            mix-blend-mode: difference;
+            display: none;
+        }
+
+        .dark-mode .magnetic-cursor {
+            border-color: #FF4444;
+        }
+
+        .magnetic-cursor.hover {
+            width: 50px;
+            height: 50px;
+            border-color: #FF4444;
+            background: rgba(248, 0, 0, 0.1);
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--oracle-red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease;
+            display: none;
+        }
+
+        .dark-mode .cursor-follower {
+            background: #FF4444;
+        }
+
+        /* Show custom cursor only on desktop */
+        @media (min-width: 1024px) and (pointer: fine) {
+            body, a, button {
+                cursor: none;
+            }
+            
+            .magnetic-cursor,
+            .cursor-follower {
+                display: block;
+            }
+        }
+
+        /* Magnetic elements */
+        .magnetic {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* TABLET LANDSCAPE OPTIMIZATIONS */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            section {
+                padding: 80px 30px;
+            }
+            
+            .hero-title {
+                font-size: 60px;
+            }
+            
+            .section-title {
+                font-size: 50px;
+            }
+        }
+
+        /* RESPONSIVE - MOBILE */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 16px;
+                top: max(15px, env(safe-area-inset-top, 15px));
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 14px;
+                padding: 10px 8px;
+            }
+
+            .mode-toggle {
+                width: 50px;
+                height: 50px;
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                left: max(20px, env(safe-area-inset-left, 20px));
+            }
+
+            section {
+                padding: 80px 16px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .skills-container {
+                gap: 10px;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .cookie-notification {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 12px;
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                border-radius: 20px;
+            }
+
+            .cookie-text {
+                text-align: center;
+            }
+
+            .scroll-indicator {
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            }
+
+            .location-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .location-item {
+                display: block;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+        @media (max-width: 375px) {
+            header {
+                padding: 8px 12px;
+            }
+            
+            nav {
+                gap: 6px;
+            }
+
+            nav a {
+                font-size: 13px;
+                padding: 10px 6px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .dynamic-text {
+                display: block;
+                margin: 10px auto 0;
+                width: fit-content;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            section {
+                padding: 70px 12px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .projects-grid {
+                gap: 16px;
+            }
+
+            .project-image {
+                height: 150px;
+            }
+        }
+
+        /* LARGE SCREENS */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1400px;
+            }
+            
+            section {
+                padding: 120px 60px;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            section {
+                padding: 140px 80px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .project-image {
+                height: 300px;
+            }
+        }
+
+        /* ULTRA-WIDE SCREENS */
+        @media (min-width: 2560px) {
+            .container {
+                max-width: 2000px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            .noise,
+            .mode-toggle,
+            .cookie-notification,
+            .scroll-indicator,
+            .magnetic-cursor,
+            .cursor-follower,
+            .loader {
+                display: none !important;
+            }
+            
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* REDUCED MOTION */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* HIGH CONTRAST MODE */
+        @media (prefers-contrast: high) {
+            .project-card,
+            header,
+            .mode-toggle {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-text">TK</div>
+    </div>
+
+    <!-- NOISE TEXTURE -->
+    <div class="noise"></div>
+
+    <!-- MAGNETIC CURSOR -->
+    <div class="magnetic-cursor" id="magneticCursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- HEADER -->
+    <header id="header">
+        <nav role="navigation" aria-label="Main navigation">
+            <a href="#home" aria-label="Go to home section">Home</a>
+            <a href="#work" aria-label="Go to work section">Work</a>
+            <a href="#about" aria-label="Go to about section">About</a>
+            <a href="#contact" aria-label="Go to contact section">Contact</a>
+        </nav>
+    </header>
+
+    <!-- MODE TOGGLE -->
+    <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon mode-icon" aria-hidden="true"></i>
+    </button>
+
+    <!-- COOKIE NOTIFICATION -->
+    <div class="cookie-notification" id="cookieNotification" role="dialog" aria-label="Cookie notification">
+        <span class="cookie-text">This website uses <a>cookies</a>.</span>
+        <button class="cookie-accept" id="cookieAccept" aria-label="Accept cookies">Accept</button>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator" id="scrollIndicator" role="button" aria-label="Scroll to next section" tabindex="0">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-arrow" aria-hidden="true"></div>
+    </div>
+
+    <!-- SECTIONS -->
+    <section id="home" class="active">
+        <div class="container">
+            <h1 class="hero-title">Tharun Kommaddi</h1>
+            <p class="subtitle">
+                Crafting Enterprise Solutions with 
+                <span class="dynamic-text" id="dynamicText">Oracle APEX</span>
+            </p>
+            <p class="hero-description">
+                Oracle APEX Developer with over 2 years of experience, specializing in scalable 
+                web application solutions at EMANO Development GmbH. Proven expertise in designing 
+                and implementing end-to-end database-driven applications with a focus on performance 
+                optimization and business logic integration.
+            </p>
+            <div class="location-info">
+                <span class="location-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Chemnitz, Germany</span>
+                <span aria-hidden="true">•</span>
+                <span class="location-item"><i class="fas fa-graduation-cap" aria-hidden="true"></i> M.Sc. Computer Science</span>
+                <span aria-hidden="true">•</span>
+                <span class="location-item"><i class="fas fa-briefcase" aria-hidden="true"></i> Oracle APEX Developer</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <div class="container">
+            <h2 class="section-title">Projects Portfolio</h2>
+            <p style="text-align: center; color: var(--text-grey); margin-bottom: 20px;">
+                Enterprise-level solutions delivered with precision and innovation
+            </p>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-image" aria-label="CARMHA Project">CARMHA</div>
+                    <div class="project-info">
+                        <h3>Carmha Project</h3>
+                        <p class="project-tech">Oracle APEX • PL/SQL • JavaScript</p>
+                        <p>Developed comprehensive web application modules using Oracle APEX with advanced reporting modules featuring real-time data visualization and automated complex business workflows.</p>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <div class="project-image" aria-label="REGNIDEX Project">REGNIDEX</div>
+                    <div class="project-info">
+                        <h3>Regnidex Project</h3>
+                        <p class="project-tech">Oracle APEX • PL/SQL • Jasper Reports</p>
+                        <p>Built enterprise-level reporting and data management solutions with streamlined workflows to drive operational efficiency and enhanced user experience.</p>
+                    </div>
+                </article>
+                <article class="project-card">
+                    <div class="project-image" aria-label="Analytics Project">Analytics</div>
+                    <div class="project-info">
+                        <h3>Data Analysis & ML</h3>
+                        <p class="project-tech">Python • Power BI • Machine Learning</p>
+                        <p>World Economic Outlook Data Analysis with interactive dashboards and Customer Segmentation Analytics using clustering algorithms for business intelligence.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Professional Journey</h2>
+            <p class="about-intro">
+                Committed to continuous professional growth by integrating emerging technologies 
+                and adopting innovative approaches to Oracle APEX development. Experienced in mentoring 
+                and guiding junior developers, fostering best practices across development teams.
+            </p>
+            
+            <div class="experience-grid">
+                <article class="experience-card">
+                    <h3>Oracle APEX Developer</h3>
+                    <p class="experience-company">EMANO Development GmbH • Germany</p>
+                    <div class="experience-date">June 2023 – Present</div>
+                    <ul>
+                        <li>Architecting and delivering comprehensive Oracle APEX applications with complex business logic</li>
+                        <li>Developing dynamic, interactive reports and dashboards using advanced Oracle APEX components</li>
+                        <li>Designing and optimizing PL/SQL packages, procedures, functions, and triggers</li>
+                        <li>Creating responsive web interfaces with HTML5, CSS3, JavaScript, and jQuery</li>
+                        <li>Integrating Jasper Reports for enterprise-grade reporting solutions</li>
+                        <li>Tuning complex SQL queries to enhance performance in demanding transactional systems</li>
+                    </ul>
+                </article>
+                
+                <article class="experience-card">
+                    <h3>Junior Machine Learning Engineer</h3>
+                    <p class="experience-company">EngiGyan Techno PVT LTD • India</p>
+                    <div class="experience-date">April 2019 – September 2019</div>
+                    <ul>
+                        <li>Led design and deployment of machine learning models in production environments</li>
+                        <li>Collaborated with 7-member ML team on data analysis and model optimization</li>
+                        <li>Conducted quality assurance assessments to validate model performance</li>
+                        <li>Implemented ML and DL frameworks for ongoing model maintenance</li>
+                    </ul>
+                </article>
+
+                <article class="experience-card">
+                    <h3>Data Analyst</h3>
+                    <p class="experience-company">EngiGyan Techno PVT LTD • India</p>
+                    <div class="experience-date">May 2018 – August 2018</div>
+                    <ul>
+                        <li>Developed interactive dashboards and data visualization tools</li>
+                        <li>Managed multiple projects within 5-member analyst team</li>
+                        <li>Created detailed design presentations for client proposals</li>
+                        <li>Provided data-driven recommendations for business strategies</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="skills-section">
+                <h3 class="skills-title">Technical Expertise</h3>
+                <div class="skills-container" role="list" aria-label="Technical skills">
+                    <span class="skill-tag" role="listitem">Oracle APEX</span>
+                    <span class="skill-tag" role="listitem">PL/SQL</span>
+                    <span class="skill-tag" role="listitem">Oracle Database</span>
+                    <span class="skill-tag" role="listitem">SQL</span>
+                    <span class="skill-tag" role="listitem">HTML5</span>
+                    <span class="skill-tag" role="listitem">CSS3</span>
+                    <span class="skill-tag" role="listitem">JavaScript</span>
+                    <span class="skill-tag" role="listitem">jQuery</span>
+                    <span class="skill-tag" role="listitem">Jasper Reports</span>
+                    <span class="skill-tag" role="listitem">Power BI</span>
+                    <span class="skill-tag" role="listitem">Python</span>
+                    <span class="skill-tag" role="listitem">Machine Learning</span>
+                    <span class="skill-tag" role="listitem">Git</span>
+                    <span class="skill-tag" role="listitem">REST APIs</span>
+                    <span class="skill-tag" role="listitem">AWS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Build Something</h2>
+            <p class="contact-subtitle">Have a project in mind? Let's discuss how I can help.</p>
+            <a href="mailto:tharunkommaddi@gmail.com" class="contact-btn">Get In Touch</a>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Email</strong>
+                    <a href="mailto:tharunkommaddi@gmail.com">tharunkommaddi@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Phone</strong>
+                    <a href="tel:+4917647670970">+49 176 4767 0970</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Location</strong>
+                    <span>Chemnitz, Germany</span>
+                </div>
+                <div class="contact-item">
+                    <strong>LinkedIn</strong>
+                    <a href="https://www.linkedin.com/in/tharunkommaddi/" target="_blank" rel="noopener noreferrer">linkedin.com/in/tharunkommaddi</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // LOADER
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // DARK MODE TOGGLE
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+        const modeIcon = document.querySelector('.mode-icon');
+
+        // Check for saved theme preference or system preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            modeIcon.classList.remove('fa-moon');
+            modeIcon.classList.add('fa-sun');
+        }
+
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                modeIcon.classList.remove('fa-moon');
+                modeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                modeIcon.classList.remove('fa-sun');
+                modeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // DYNAMIC TEXT ROTATION
+        const dynamicText = document.getElementById('dynamicText');
+        const texts = ['Oracle APEX', 'PL/SQL', 'JavaScript', 'Enterprise Solutions', 'Innovation'];
+        let currentIndex = 0;
+
+        setInterval(() => {
+            dynamicText.style.opacity = '0';
+            dynamicText.style.transform = 'translateY(-10px)';
+            
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % texts.length;
+                dynamicText.textContent = texts[currentIndex];
+                dynamicText.style.opacity = '1';
+                dynamicText.style.transform = 'translateY(0)';
+            }, 300);
+        }, 3000);
+
+        dynamicText.style.transition = 'all 0.3s ease';
+
+        // SECTION SWITCHING
+        const navLinks = document.querySelectorAll('nav a');
+        const sections = document.querySelectorAll('section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Get target section
+                const targetId = link.getAttribute('href').substring(1);
+                
+                // Remove active class from all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Add active class to target section
+                document.getElementById(targetId).classList.add('active');
+                
+                // Update active nav link
+                navLinks.forEach(navLink => {
+                    navLink.style.color = '';
+                });
+                link.style.color = body.classList.contains('dark-mode') ? '#fff' : '#0a0a0a';
+                
+                // Scroll to top of section
+                document.getElementById(targetId).scrollTop = 0;
+            });
+        });
+
+        // Set initial active nav link
+        navLinks[0].style.color = body.classList.contains('dark-mode') ? '#fff' : '#0a0a0a';
+
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Animate project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Animate experience cards
+        document.querySelectorAll('.experience-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(-30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Animate skill tags
+        document.querySelectorAll('.skill-tag').forEach((tag, index) => {
+            tag.style.opacity = '0';
+            tag.style.transform = 'scale(0.8)';
+            tag.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                observer.observe(tag);
+            }, index * 30);
+        });
+
+        // PARALLAX EFFECT ON MOUSE MOVE (Desktop only)
+        if (window.innerWidth >= 1024) {
+            document.addEventListener('mousemove', (e) => {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+                
+                document.querySelectorAll('.project-card').forEach(card => {
+                    if (!card.matches(':hover')) {
+                        card.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    }
+                });
+            });
+        }
+
+        // SCROLL INDICATOR CLICK
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        scrollIndicator.addEventListener('click', () => {
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById('work').classList.add('active');
+            navLinks.forEach(link => link.style.color = '');
+            navLinks[1].style.color = body.classList.contains('dark-mode') ? '#fff' : '#0a0a0a';
+        });
+
+        // Keyboard accessibility for scroll indicator
+        scrollIndicator.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                scrollIndicator.click();
+            }
+        });
+
+        // COOKIE NOTIFICATION
+        const cookieNotification = document.getElementById('cookieNotification');
+        const cookieAccept = document.getElementById('cookieAccept');
+
+        if (localStorage.getItem('cookiesAccepted') === 'true') {
+            cookieNotification.classList.add('hidden');
+        }
+
+        cookieAccept.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieNotification.classList.add('hidden');
+        });
+
+        // MAGNETIC CURSOR EFFECT (Desktop only with fine pointer)
+        const isDesktop = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+        
+        if (isDesktop) {
+            const magneticCursor = document.getElementById('magneticCursor');
+            const cursorFollower = document.getElementById('cursorFollower');
+            let cursorX = 0, cursorY = 0;
+            let followerX = 0, followerY = 0;
+
+            // Update cursor position
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+                
+                magneticCursor.style.left = cursorX + 'px';
+                magneticCursor.style.top = cursorY + 'px';
+            });
+
+            // Smooth follower animation
+            function animateFollower() {
+                followerX += (cursorX - followerX) * 0.15;
+                followerY += (cursorY - followerY) * 0.15;
+                
+                cursorFollower.style.left = followerX + 'px';
+                cursorFollower.style.top = followerY + 'px';
+                
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+
+            // Magnetic effect on interactive elements
+            const magneticElements = document.querySelectorAll('a, button, .project-card, .skill-tag');
+            
+            magneticElements.forEach(element => {
+                element.classList.add('magnetic');
+                
+                element.addEventListener('mouseenter', () => {
+                    magneticCursor.classList.add('hover');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    magneticCursor.classList.remove('hover');
+                    element.style.transform = '';
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const strength = 0.2;
+                    element.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+                });
+            });
+
+            // Enhanced project card 3D effect
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const rotateX = (y / rect.height) * 8;
+                    const rotateY = (x / rect.width) * -8;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // Performance optimization: Debounce resize events
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Handle any resize-specific logic here
+                console.log('Window resized');
+            }, 250);
+        });
+
+        console.log('✓ Tharun Kommaddi Portfolio loaded successfully!');
+    </script>
+</body>
+</html>
