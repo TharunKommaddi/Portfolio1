@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1">
+
+    <title>Ealias Johnson | Web Developer Portfolio</title>
+    <meta name="description" content="Portfolio of Ealias Johnson, a passionate web developer crafting dynamic and responsive digital experiences.">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/wp-content/themes/cosmos/public/pwa/manifest.json">
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#181818">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="og:title" content="Ealias Johnson | Web Developer">
+    <meta property="og:description" content="A passionate Web Developer with a knack for creating dynamic and responsive websites and applications.">
+    <meta property="og:image" content="images/portfolio-og-image.jpg"> <meta property="og:url" content="https://your-domain.com">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link crossorigin="anonymous" rel="stylesheet" id="module/resources/assets/scss/style.scss-css" href="css/style-f8772380.css" media="all">
+
+    <style>
+        /* Custom styles for portfolio */
+        .experience-item {
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 20px;
+            background-color: rgba(255,255,255,0.5);
+        }
+        .dark .experience-item {
+            border-color: rgba(255,255,255,0.1);
+            background-color: rgba(0,0,0,0.2);
+        }
+        .experience-item h3 {
+            font-size: 22px;
+            font-weight: 500;
+        }
+        .experience-item .date {
+            color: #888;
+            font-size: 14px;
+        }
+        .project-grid-item {
+            transition: transform 0.3s ease;
+        }
+        .project-grid-item:hover {
+            transform: scale(1.03);
+        }
+    </style>
+
+</head>
+
+<body class="home page-template-default page page-id-16 wp-embed-responsive dark:bg-black bg-off-white bg-animation | js-audio">
+
+    <div class="header | fixed top left z-30 user-select-none | js-header js-forms js-shy-header">
+        <div class="fixed top left width w-1/1 h-10 z-10 | js-shy-header:trigger"></div>
+
+        <a href="/" class="header__wordmark | d-none d-block@md | js-header-wordmark" style="font-family: 'GTSuperDisplay', serif; font-size: 24px; font-weight: 300; text-decoration: none; color: inherit;">
+             Ealias Johnson
+        </a>
+
+        <header class="header__el | fixed center-x z-20 rounded-22 bg-tweet-bg-light@sm dark:bg-header@sm bg-animation | js-shy-header:el js-header:el">
+            <div class="header__inner | d-flex justify-end justify-center@sm items-center relative | js-header:inner">
+                <div class="header__logoContainer | d-none d-block@sm flex-no-shrink pointer-events-none pointer-events-auto@sm | js-header:logomarkContainer">
+                    <a class="d-flex items-center t-lh-1 mr-20 | js-header:logomark" href="#" aria-label="Back to top">
+                        <span style="font-weight: bold; font-size: 24px;">EJ</span>
+                    </a>
+                </div>
+
+                <nav class="navigation | d-none d-flex@sm items-center overflow-hidden relative js-header:navigationContainer" aria-label="Main navigation">
+                    <ul role="menubar" aria-label="Main navigation" class="d-flex items-center list-unstyled mb-0 | js-header:navigation">
+                        <li class="t-lh-1 d-flex" role="none">
+                            <a href="#about" class="link | t-d-warm-grey dark:t-grey2 t-font-smooth t-base t-400 t-no-underline d-inline-block  |  " role="menuitem">
+                                <div class="t-lh-1 relative d-flex overflow-hidden">
+                                    <div class="link__text | d-block t-lh-1">About</div>
+                                    <div class="link__text link__text--hover t-black dark:t-off-white | d-block absolute left t-lh-1">About</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="t-lh-1 d-flex" role="none">
+                            <a href="#projects" class="link | t-d-warm-grey dark:t-grey2 t-font-smooth t-base t-400 t-no-underline d-inline-block ml-20 |  " role="menuitem">
+                                <div class="t-lh-1 relative d-flex overflow-hidden">
+                                    <div class="link__text | d-block t-lh-1">Projects</div>
+                                    <div class="link__text link__text--hover t-black dark:t-off-white | d-block absolute left t-lh-1">Projects</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="t-lh-1 d-flex" role="none">
+                            <a href="#experience" class="link | t-d-warm-grey dark:t-grey2 t-font-smooth t-base t-400 t-no-underline d-inline-block ml-20" role="menuitem">
+                                <div class="t-lh-1 relative d-flex overflow-hidden">
+                                    <div class="link__text | d-block t-lh-1">Experience</div>
+                                    <div class="link__text link__text--hover t-black dark:t-off-white | d-block absolute left t-lh-1">Experience</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="d-none d-block@sm | js-header:signInBtnContainer">
+                    <a class="button  js-button header__sign-in | link t-font-smooth ml-24 t-base t-500 d-inline-block t-black dark:t-off-white color-animation b-1 b-warm-grey dark:b-header-btn-border b-color-animation rounded-15 t-nowrap t-no-underline relative | js-header:signInBtn" href="#contact">
+                        <div class="d-flex items-center t-lh-1">
+                            <div class="t-lh-1 relative d-flex overflow-hidden z-1">
+                                <div class="link__text | d-block t-lh-1 pb-1">Contact Me</div>
+                                <div class="link__text link__text--hover t-black dark:t-off-white | d-block absolute left t-lh-1 pb-1">Contact Me</div>
+                            </div>
+                            <div class="button__border | absolute rounded-15 top left"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="header__menu-btn | d-none@sm bg-black dark:bg-header absolute left ml-6 center-y d-flex justify-center items-center p-0 | js-menu-toggle js-header:menuIcon" aria-controls="toggle-menu" aria-label="Open menu">
+                     <svg aria-hidden="true" class="header__menu-icon">
+                        <use xlink:href="#menu"></use>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        </div>
+
+    <div class="site-loader | js-site-loader">
+        <div class="site-loader__indicator | js-site-loader:indicator">0%</div>
+        <div class="absolute center-xy">
+            <div class="site-loader__gradient | js-site-loader:gradient" style="transform: scale(0); opacity: 0;"></div>
+        </div>
+        <div class="absolute center-xy d-flex flex-column items-center | js-site-loader:text">
+            <h1 class="t-serif" style="font-size: 8vw; color: #888;">Ealias Johnson</h1>
+        </div>
+    </div>
+    
+    <div class="mode-toggle | user-select-none t-base t-400 t-white fixed t-lh-1 | js-mode-toggle">
+        <div class="mode-toggle__border | absolute top left h-1/1 overflow-hidden | js-mode-toggle:border">
+            <div class="b-1 bg-off-white dark:bg-black bg-animation b-border-light dark:b-opacity-border absolute rounded-12 rounded-15@sm h-1/1 b-color-animation | js-mode-toggle:borderInner"></div>
+        </div>
+        <div class="mode-toggle__border | absolute top right h-1/1 overflow-hidden | js-mode-toggle:border">
+            <div class="b-1 bg-off-white dark:bg-black bg-animation b-border-light dark:b-opacity-border absolute rounded-12 rounded-15@sm h-1/1 b-color-animation | js-mode-toggle:borderInner"></div>
+        </div>
+        <div class="mode-toggle__mask | absolute fill | js-mode-toggle:mask">
+            <div class="mode-toggle__maskInner | absolute fill overflow-hidden | js-mode-toggle:maskInner">
+                <div class="mode-toggle__text | d-flex justify-between items-center absolute fill | js-mode-toggle:text">
+                    <div class="mode-toggle__text__item mode-toggle__text__item--dark  | dark:t-dark-toggle t-warm-grey color-animation | js-mode-toggle:darkText">Dark</div>
+                    <div class="mode-toggle__text__item mode-toggle__text__item--light | dark:t-dark-toggle t-warm-grey color-animation | js-mode-toggle:lightText">Light</div>
+                </div>
+                <div class="mode-toggle__icons | absolute | js-mode-toggle:icons">
+                    <svg aria-hidden="true" class="mode-toggle__svg absolute fill | js-mode-toggle:icon"><use xlink:href="#dark-mode"></use></svg>
+                    <svg aria-hidden="true" class="mode-toggle__svg fill-black absolute fill | js-mode-toggle:icon"><use xlink:href="#light-mode"></use></svg>
+                </div>
+            </div>
+        </div>
+        <div class="mode-toggle__glow | js-mode-toggle:glow"><div class="mode-toggle__glow__inner | js-mode-toggle:glowInner"></div></div>
+        <div class="mode-toggle__box pointer-events-none | absolute top left | js-mode-toggle:box"></div>
+    </div>
+
+    <div class="scroll-prompt | fixed bottom right z-20 mr-20 mb-20 mr-40@sm mb-40@sm t-base t-grey items-center t-lh-1.7 user-select-none | js-scroll-prompt">
+        <span class="d-none d-inline-block@sm">Scroll to explore</span>
+        <div class="icon icon--large relative d-inline-block ml-8">
+            <div class="scroll-prompt__icon-bg absolute fill bg-black@sm dark:bg-off-white@sm rounded-12 rounded-15@sm b-1 b-0@sm b-black dark:b-off-white b-color-animation bg-animation"></div>
+            <svg aria-hidden="true" class="icon__svg scroll-prompt__icon fill-off-white@sm dark:fill-black@sm fill-black dark:fill-off-white fill-animation"><use xlink:href="#chevron-down"></use></svg>
+        </div>
+    </div>
+
+    <div class="noise"></div>
+    <div class="page-transition | fixed w-100vw z-50 bg-transition dark:bg-black | js-page-transition"></div>
+    <div class="vortex-vignette | fixed fill pointer-events-none"></div>
+    <canvas class="webgl-vortex | fixed fill z-negative"></canvas>
+
+    <main class="scroll-container">
+        <div data-taxi="">
+            <div data-taxi-view="home">
+                <div class="main-container overflow-hidden">
+
+                    <div class="landing section user-select-none | js-home-landing" id="about">
+                        <div class="section__inner | js-home-landing:inner">
+                            <div class="absolute center-xy d-flex flex-column items-center">
+                                <h1 class="landing__wordmark fill-animation fill-black dark:fill-off-white | js-home-landing-logo" style="font-family: 'GTSuperDisplay', serif; font-size: 10vw; font-weight: 300; letter-spacing: -0.03em;">
+                                    Ealias Johnson
+                                </h1>
+                                <div class="mt-18 mt-24@sm mt-32@md | js-home-landing-byline">
+                                    <div class="t-warm-grey dark:t-grey color-animation t-14 t-18@sm t-22@md t-400 | js-dynamic-text-container">
+                                        Crafting Digital Experiences with
+                                        <div class="dynamic-text | t-black dark:t-off-white color-animation d-inline-block relative t-14 t-18@sm t-22@md | js-dynamic-text ml-8 ml-7@sm ml-10@md">
+                                            <div class="absolute h-1/1 overflow-hidden top left absolute fill b-1 b-border-light dark:b-opacity-border b-color-animation rounded-10 rounded-15@sm | js-dynamic-text:border"></div>
+                                            <div class="d-inline-block px-12 px-12@sm px-14@md pb-7 pb-9@sm pb-10@md pt-5 pt-8@md  | js-dynamic-text:text">React</div>
+                                            <div class="d-inline-block px-12 px-12@sm px-14@md pb-7 pb-9@sm pb-10@md pt-5 pt-8@md absolute | js-dynamic-text:text">JavaScript</div>
+                                            <div class="d-inline-block px-12 px-12@sm px-14@md pb-7 pb-9@sm pb-10@md pt-5 pt-8@md absolute | js-dynamic-text:text">Node.js</div>
+                                            <div class="d-inline-block px-12 px-12@sm px-14@md pb-7 pb-9@sm pb-10@md pt-5 pt-8@md absolute | js-dynamic-text:text">MongoDB</div>
+                                            <div class="d-inline-block px-12 px-12@sm px-14@md pb-7 pb-9@sm pb-10@md pt-5 pt-8@md absolute | js-dynamic-text:text">Passion</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="t-warm-grey dark:t-grey color-animation t-14 t-18@sm t-22@md t-400 mt-24" style="max-width: 600px; text-align: center;">
+                                    A passionate Web Developer with a knack for creating dynamic and responsive websites and applications. Proficient in MERN stack, with a strong focus on user-centric design and performance.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-grid section | d-flex justify-center items-center relative | js-main-grid" id="projects">
+                        <div class="main-grid__st | js-main-grid-st"></div>
+                        <div class="section__inner | js-main-grid:inner">
+                            <div class="absolute center-xy max-w-300 max-w-400@sm max-w-500@md z-1 d-flex flex-column items-center | js-main-grid:content">
+                                <h2 class="t-serif t-30 t-50@sm t-60@md t-300 t-ls--3 t-lh-1 t-center t-black dark:t-off-white mb-0 color-animation | js-main-grid:title js-no-split">Featured Work</h2>
+                                <div class="mt-12 | js-main-grid:subtitle">
+                                    <p class="t-warm-grey dark:t-grey color-animation t-14 t-18@sm t-22@md t-400">A collection of my recent projects.</p>
+                                </div>
+                            </div>
+                            <div class="absolute fill top left overflow-hidden">
+                                <div class="main-grid__item main-grid__item--1 project-grid-item | js-main-grid:item">
+                                    <a href="#" class="main-grid__item__inner js-main-grid:itemInner">
+                                        <div class="main-grid__item__translate">
+                                            <img src="https://via.placeholder.com/340x510.png?text=E-commerce+Platform" alt="E-commerce Platform Project" class="attachment-2:3 size-2:3">
+                                            </div>
+                                    </a>
+                                </div>
+                                <div class="main-grid__item main-grid__item--2 project-grid-item | js-main-grid:item">
+                                    <a href="#" class="main-grid__item__inner js-main-grid:itemInner">
+                                        <div class="main-grid__item__translate">
+                                            <img src="https://via.placeholder.com/344x430.png?text=Task+Manager+App" alt="Task Management App Project" class="attachment-4:5 size-4:5">
+                                             </div>
+                                    </a>
+                                </div>
+                                <div class="main-grid__item main-grid__item--3 project-grid-item | js-main-grid:item">
+                                    <a href="#" class="main-grid__item__inner js-main-grid:itemInner">
+                                        <div class="main-grid__item__translate">
+                                            <img src="https://via.placeholder.com/344x430.png?text=Old+Portfolio" alt="Personal Portfolio Project" class="attachment-4:5 size-4:5">
+                                             </div>
+                                    </a>
+                                </div>
+                                <div class="main-grid__item main-grid__item--4 project-grid-item | js-main-grid:item ">
+                                    <div class="main-grid__item__inner js-main-grid:itemInner">
+                                        <div class="main-grid__item__translate | ">
+                                            <img src="https://via.placeholder.com/340x340.png?text=Project+4" class="attachment-1:1 size-1:1">
+                                            </div>
+                                    </div>
+				                </div>
+                                <div class="main-grid__item main-grid__item--6 project-grid-item | js-main-grid:item ">
+                                    <div class="main-grid__item__inner js-main-grid:itemInner">
+                                        <div class="main-grid__item__translate | ">
+                                            <img src="https://via.placeholder.com/344x430.png?text=Project+5" class="attachment-4:5 size-4:5">
+                                            </div>
+                                    </div>
+				                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section app-grid | js-app-grid" id="experience">
+                        <div class="section__inner | js-app-grid:inner">
+                            <div class="pt-0 pt-194@md d-flex items-center flex-column w-1/1">
+                                <div class="max-w-300 max-w-400@sm max-w-600@md z-1 d-flex flex-column items-center z-1 | js-app-grid:textContainer">
+                                    <h2 class="t-serif t-30 t-50@sm t-60@md t-300 t-ls--3 t-lh-1 t-center t-black dark:t-off-white mb-0 color-animation | js-app-grid:title js-no-split">Work Experience</h2>
+                                    <div class="mt-16 mt-24@sm mt-28@md | js-main-grid:subtitle">
+                                        <p class="t-d-warm-grey t-black dark:t-warm-grey color-animation t-14 t-18@sm t-300 t-center t-lh-1.4 mb-0 | js-app-grid:text js-no-split">My professional journey and key contributions.</p>
+                                    </div>
+                                </div>
+
+                                <div class="w-1/1" style="max-width: 900px; margin-top: 72px;">
+                                    <div class="experience-item t-black dark:t-off-white color-animation">
+                                        <h3>Web Developer @ Tech Solutions Inc.</h3>
+                                        <p class="date">June 2021 - Present</p>
+                                        <p class="t-d-warm-grey dark:t-warm-grey color-animation">Developed and maintained client websites using React, Node.js, and MongoDB. Collaborated with designers to create responsive and user-friendly interfaces. Improved website performance by 20% through code optimization.</p>
+                                    </div>
+                                    <div class="experience-item t-black dark:t-off-white color-animation">
+                                        <h3>Junior Web Developer @ Creative Minds LLC</h3>
+                                        <p class="date">Jan 2020 - May 2021</p>
+                                        <p class="t-d-warm-grey dark:t-warm-grey color-animation">Assisted in the development of various web projects. Gained hands-on experience with HTML, CSS, JavaScript, and version control using Git. Contributed to building reusable code components for future use.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section tagging-system pt-40 pt-0@md | js-tagging-system" id="skills">
+                        <div class="tagging-system__inner d-flex justify-center align-center | js-tagging-system:inner">
+                            <div class="grid w-1/1 flex-column-reverse flex-row@sm justify-center items-center">
+                                <div class="tagging-system__placeholder | w-16/24 w-11/24@sm w-8/24@md w-6/24@lg w-5/24@4k relative | js-tagging-system:placeholder">
+                                    <img src="https://via.placeholder.com/800x600.png?text=My+Tech+Stack" style="opacity: 0.1; border-radius: 15px;">
+                                    <div class="absolute fill w-1/1 h-1/1 js-tagging-system:tagContainer">
+                                        <div class="tag tag--1 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">HTML5</div></div>
+                                        <div class="tag tag--2 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">CSS3</div></div>
+                                        <div class="tag tag--3 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">JavaScript</div></div>
+                                        <div class="tag tag--4 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">React</div></div>
+                                        <div class="tag tag--5 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">Node.js</div></div>
+                                        <div class="tag tag--6 absolute | js-tagging-system:tag"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">MongoDB</div></div>
+                                        <div class="tag tag--1 absolute | js-tagging-system:tag" style="top: 70%; left: 40%;"><div class="tag__inner t-16 dark:t-off-white t-d-warm-grey rounded-77 px-16 py-4 color-animation bg-animation js-tagging-system:tagInner">Git</div></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column items-center items-start@sm w-1/1 w-10/24@sm w-8/24@md offset-1/24@sm mb-55 mb-0@sm">
+                                    <h2 class="w-2/3 w-1/1@sm t-serif t-30 t-50@lg t-center t-left@sm t-300 t-ls--3 t-lh-1 t-black dark:t-off-white mb-16 color-animation | js-tagging-system:title js-no-split">Skills & Expertise</h2>
+                                    <p class="t-d-warm-grey t-center t-left@sm t-black dark:t-warm-grey color-animation t-14 t-18@sm t-300 t-lh-1.4 mb-0 | js-tagging-system:text js-no-split">I leverage a modern tech stack to build efficient, scalable, and beautiful web applications from the ground up.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section globe-section | d-flex flex-column items-center justify-center relative overflow-hidden | js-globe-section" data-cursor="drag">
+                        <div class="w-1/1 d-flex flex-column items-center">
+                            <div class="w-1/1 d-flex grid@md justify-center items-center items-end@md mb-40@md user-select-none">
+                                <h2 class="globe-section__title | t-serif t-30 t-60@xlg t-center t-left@md t-300 t-ls--3 t-lh-1 t-black dark:t-off-white color-animation mb-18 mb-0@md | js-globe-section:title js-no-split">Education & Passion</h2>
+                                <p class="globe-section__text | offset-1/24@md t-d-warm-grey t-center t-left@md t-black dark:t-warm-grey color-animation t-14 t-18@sm t-300 t-lh-1.4 mb-20 mb-0@md | js-globe-section:text js-no-split">My foundation is a Bachelor of Science in Computer Science from the University of Technology (2016-2020), but my drive comes from a lifelong passion for building things for the web.</p>
+                            </div>
+                        </div>
+                         <canvas class="webgl-globe | absolute top left"></canvas>
+                    </div>
+                    
+                    <div id="contact" class="section rocks-section | relative z-0 d-flex items-center justify-center bg-off-white dark:bg-black bg-animation | js-rocks-section">
+                        <canvas class="webgl-rocks rocks-section__canvas"></canvas>
+                        <div class="relative d-flex flex-column items-center justify-center pointer-events-auto">
+                            <p class="mb-0 t-d-warm-grey dark:d-warm-grey color-animation t-14 t-18@md mb-4 t-font-smooth | js-rocks-section:text js-no-split">Have a project in mind?</p>
+                            <h3 class="t-serif t-44 t-60@md mb-32@md t-300 t-ls--3 t-lh-1 dark:t-off-white t-black color-animation t-font-smooth | js-rocks-section:title js-no-split">Let's build something.</h3>
+                             <a href="mailto:ealias.johnson@email.com" class="waitlist-form__submit button link t-font-smooth bg-black dark:bg-off-white bg-animation t-500 t-base d-inline-block dark:t-black t-off-white color-animation b-0 rounded-15 t-nowrap t-no-underline">
+                                <div class="t-lh-1 relative d-flex overflow-hidden">
+                                    <div class="link__text | d-block t-lh-1 pb-1">Get In Touch</div>
+                                    <div class="link__text link__text--hover t-black dark:t-off-white | d-block absolute left t-lh-1 pb-1">Get In Touch</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-1/1 d-block pointer-events-none | js-dummmy-footer"></div>
+
+                <footer class="footer | bg-footer-light dark:bg-footer-dark bg-animation pt-28 pt-84@md w-1/1 | js-footer" aria-label="Website footer">
+                    <div class="footer__inner | d-flex mb-40 | js-footer:inner">
+                        <div class="footer__text | d-flex items-center flex-column d-block@sm">
+                            <span style="font-weight: bold; font-size: 32px; color: #888;" class="mb-16">EJ</span>
+                            <p class="t-black dark:t-off-white color-animation t-center t-left@sm t-20 t-28@sm t-lh-1 mb-0 t-300 t-lh-1.1">Ealias Johnson - Web Developer</p>
+                        </div>
+                        <div class="footer__cols | d-none d-block@sm">
+                            <ul class="list-unstyled mb-0 grid h-1/1" role="menubar" aria-label="Footer navigation">
+                                <li class="w-8/24 d-flex flex-column justify-end" role="none">
+                                    <p class="footer__subtitles | t-d-warm-grey dark:t-warm-grey t-14 t-uppercase mb-12">Navigate</p>
+                                    <ul class="list-unstyled" role="menu">
+                                        <li role="none" class="t-lh-1.55"><a href="#about" class="link link--footer | t-black dark:t-warm-grey t-font-smooth t-base t-300 t-no-underline d-inline-block">About</a></li>
+                                        <li role="none" class="t-lh-1.55"><a href="#projects" class="link link--footer | t-black dark:t-warm-grey t-font-smooth t-base t-300 t-no-underline d-inline-block">Projects</a></li>
+                                        <li role="none" class="t-lh-1.55"><a href="#experience" class="link link--footer | t-black dark:t-warm-grey t-font-smooth t-base t-300 t-no-underline d-inline-block">Experience</a></li>
+                                    </ul>
+                                </li>
+                                <li class="w-8/24 d-flex flex-column justify-end" role="none">
+                                    <p class="footer__subtitles | t-d-warm-grey dark:t-warm-grey t-14 t-uppercase mb-12">Contact</p>
+                                    <ul class="list-unstyled" role="menu">
+                                        <li role="none" class="t-lh-1.55"><p class="t-black dark:t-warm-grey t-font-smooth t-base t-300">ealias.johnson@email.com</p></li>
+                                        <li role="none" class="t-lh-1.55"><p class="t-black dark:t-warm-grey t-font-smooth t-base t-300">+1 234 567 8900</p></li>
+                                    </ul>
+                                </li>
+                                <li class="w-8/24 d-flex flex-column justify-end" role="none">
+                                    <p class="footer__subtitles | t-d-warm-grey dark:t-warm-grey t-14 t-uppercase mb-12">Connect</p>
+                                    <ul class="list-unstyled" role="menu">
+                                        <li role="none" class="t-lh-1.55"><a href="#" class="link link--footer | t-black dark:t-warm-grey t-font-smooth t-base t-300 t-no-underline d-inline-block">LinkedIn</a></li>
+                                        <li role="none" class="t-lh-1.55"><a href="#" class="link link--footer | t-black dark:t-warm-grey t-font-smooth t-base t-300 t-no-underline d-inline-block">GitHub</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer__wordmark | d-flex justify-center w-1/1 mt-60@sm mt-84@md | js-footer:logo">
+                       <h3 class="t-serif t-black dark:t-off-white" style="font-weight: 300;">Ealias Johnson</h3>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <div class="height-div"></div>
+    <div class="pointer-events-none fixed top left cursor | js-custom-cursor">
+        <div class="cursor__dot | js-custom-cursor:dot"></div>
+        <div class="cursor__ew"><svg aria-hidden="true" class="fill-off-white js-custom-cursor:ew"><use xlink:href="#drag-horizontal"></use></svg></div>
+    </div>
+    
+    <svg style="display: none;">
+        <symbol id="wordmark" viewBox="0 0 566 95"> ... </symbol>
+        <symbol id="logomark" viewBox="0 0 32 32"> ... </symbol>
+        </svg>
+
+    <script id="module/resources/assets/js/theme.js-js-extra">
+        var globalData = {
+            "publicUrl": "https://www.cosmos.so/wp-content/themes/cosmos/public/",
+            "assetsUrl": "https://www.cosmos.so/wp-content/themes/cosmos/resources/assets/",
+            "vortexImages": ["https://via.placeholder.com/267x400.png?text=Project+Image", "https://via.placeholder.com/330x400.png?text=Project+Image", "https://via.placeholder.com/400x400.png?text=Project+Image"]
+        };
+    </script>
+    <script type="module" defer="defer" src="js/js-29fecc54.js" id="module/resources/assets/js/theme.js-js"></script>
+</body>
+</html>
