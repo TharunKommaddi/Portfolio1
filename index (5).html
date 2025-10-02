@@ -1,0 +1,2980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f5f5">
+    <title>Tharun Kommaddi | Oracle APEX Developer</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-light: #f5f5f5;
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --text-dark: #0a0a0a;
+            --text-grey: #888888;
+            --border-light: rgba(0, 0, 0, 0.1);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --accent: #000;
+            --oracle-red: #F80000;
+        }
+
+        html {
+            overflow: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            transition: background 0.6s ease, color 0.6s ease;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* ANIMATED BACKGROUND */
+        .noise {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            width: 200%;
+            height: 200vh;
+            background: transparent url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>') repeat 0 0;
+            animation: grain 8s steps(10) infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            30% { transform: translate(3%, -15%); }
+            50% { transform: translate(12%, 9%); }
+            70% { transform: translate(9%, 4%); }
+            90% { transform: translate(-1%, 7%); }
+        }
+
+        /* PARTICLES BACKGROUND */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--oracle-red);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 15s infinite ease-in-out;
+        }
+
+        .dark-mode .particle {
+            background: #FF4444;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* FLOATING SHAPES */
+        .floating-shape {
+            position: absolute;
+            opacity: 0.05;
+            pointer-events: none;
+            animation: float-shape 20s infinite ease-in-out;
+        }
+
+        .dark-mode .floating-shape {
+            opacity: 0.08;
+        }
+
+        @keyframes float-shape {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(100px, -100px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-50px, 50px) rotate(240deg);
+            }
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top, 20px));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: 1px solid var(--border-light);
+            transition: all 0.4s ease;
+            animation: slideDown 0.8s ease-out;
+            max-width: calc(100vw - 40px);
+        }
+
+        .dark-mode header {
+            background: rgba(20, 20, 20, 0.8);
+            border-color: var(--border-dark);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav a {
+            color: var(--text-grey);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 4px;
+            min-width: 48px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav a:hover {
+            color: var(--text-dark);
+        }
+
+        .dark-mode nav a:hover {
+            color: var(--text-light);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: currentColor;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: calc(100% - 8px);
+        }
+
+        nav a.active {
+            color: var(--text-dark);
+        }
+
+        .dark-mode nav a.active {
+            color: var(--text-light);
+        }
+
+        /* MODE TOGGLE */
+        .mode-toggle {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: max(30px, env(safe-area-inset-left, 30px));
+            z-index: 100;
+            min-width: 50px;
+            min-height: 50px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mode-toggle .fa-moon {
+            color: #C0C8D8;
+        }
+
+        .mode-toggle .fa-lightbulb {
+            color: #FFC107;
+        }
+
+        .mode-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-toggle:active {
+            transform: scale(0.9) rotate(90deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .dark-mode .mode-toggle {
+            background: white;
+            color: black;
+        }
+
+        /* PROGRESS INDICATOR - HIDDEN */
+        .progress-dots {
+            display: none;
+        }
+
+        /* SECTIONS */
+        section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px;
+            position: relative;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        section.active {
+            display: flex;
+        }
+
+        section.slide-out-left {
+            animation: slideOutLeft 0.5s ease forwards;
+        }
+
+        section.slide-out-right {
+            animation: slideOutRight 0.5s ease forwards;
+        }
+
+        section.slide-in-left {
+            animation: slideInLeft 0.5s ease forwards;
+        }
+
+        section.slide-in-right {
+            animation: slideInRight 0.5s ease forwards;
+        }
+
+        @keyframes slideOutLeft {
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideOutRight {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding-left: env(safe-area-inset-left, 0);
+            padding-right: env(safe-area-inset-right, 0);
+        }
+
+        /* Make About section scrollable */
+        #about {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        /* VIDEO FLOWER BLOOM BACKGROUND */
+        .flower-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #about.active .flower-background {
+            opacity: 0.4;
+        }
+
+        .dark-mode #about.active .flower-background {
+            opacity: 0.5;
+        }
+
+        .flower-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) blur(1px);
+        }
+
+        .dark-mode .flower-background video {
+            filter: grayscale(60%) blur(0.5px);
+        }
+
+        /* Audio toggle button */
+        .audio-toggle {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            right: max(30px, env(safe-area-inset-right, 30px));
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #about.active ~ .audio-toggle {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .dark-mode .audio-toggle {
+            background: white;
+            color: black;
+        }
+
+        .audio-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-toggle.muted {
+            opacity: 0.5;
+        }
+
+        #about {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
+        }
+
+        #about .container {
+            max-height: none;
+            padding-right: 0;
+            padding-top: 120px;
+            padding-bottom: 40px;
+        }
+
+        /* Style the About section scrollbar */
+        #about::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #about::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #about::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.3);
+            border-radius: 10px;
+        }
+
+        #about::-webkit-scrollbar-thumb:hover {
+            background: rgba(136, 136, 136, 0.5);
+        }
+        
+        #home .container,
+        #work .container,
+        #contact .container {
+            overflow-y: visible;
+            max-height: none;
+        }
+
+        /* HOME SECTION */
+        #home {
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 8vw, 120px);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 30px;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .hero-title .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px) rotateX(-90deg);
+            animation: revealLetter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes revealLetter {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(16px, 2.5vw, 28px);
+            color: var(--text-grey);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+            line-height: 1.5;
+        }
+
+        .dynamic-text {
+            display: inline-block;
+            color: var(--oracle-red);
+            padding: 0;
+            margin-left: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .dark-mode .dynamic-text {
+            color: #FF4444;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            margin: 40px auto 0;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.6;
+            color: var(--text-grey);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.9s forwards;
+        }
+
+        .location-info {
+            margin-top: 30px;
+            color: var(--text-grey);
+            font-size: clamp(14px, 1.5vw, 16px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .location-info span {
+            display: inline-block;
+        }
+
+        .location-info i {
+            margin-right: 6px;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .location-info .fa-map-marker-alt {
+            color: #34A853;
+            animation-delay: 0s;
+        }
+
+        .location-info .fa-graduation-cap {
+            color: #1a1a1a;
+            animation-delay: 0.3s;
+        }
+
+        .dark-mode .location-info .fa-graduation-cap {
+            color: #f5f5f5;
+        }
+
+        .location-info .fa-briefcase {
+            color: #8B4513;
+            animation-delay: 0.6s;
+        }
+
+        .location-item {
+            white-space: nowrap;
+        }
+
+        /* WORK SECTION */
+        #work {
+            background: rgba(0, 0, 0, 0.02);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            align-items: flex-start;
+            padding-top: 120px;
+        }
+
+        .dark-mode #work {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #work::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #work::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #work::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.3);
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: clamp(36px, 6vw, 80px);
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* PROJECT FILTERS */
+        .project-filters {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: transparent;
+            color: var(--text-grey);
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-mode .filter-btn {
+            border-color: var(--border-dark);
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--oracle-red);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            left: 0;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+            border-color: var(--oracle-red);
+            transform: translateY(-2px);
+        }
+
+        .dark-mode .filter-btn:hover,
+        .dark-mode .filter-btn.active {
+            border-color: #FF4444;
+        }
+
+        .dark-mode .filter-btn::before {
+            background: #FF4444;
+        }
+
+        .filter-btn.active {
+            background: var(--oracle-red);
+            color: white;
+        }
+
+        .dark-mode .filter-btn.active {
+            background: #FF4444;
+        }
+
+        /* PROJECT CARD FILTERING */
+        .project-card {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .project-card.hidden {
+            display: none;
+        }
+
+        /* PROJECT CARD WITH FLIP */
+        .project-card {
+            background: transparent;
+            perspective: 1000px;
+            min-height: 400px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .project-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            text-align: left;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .project-card.flipped .project-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .project-card-front,
+        .project-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            background: white;
+            top: 0;
+            left: 0;
+        }
+
+        .dark-mode .project-card-front,
+        .dark-mode .project-card-back {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-dark);
+        }
+
+        .project-card-front {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card-front::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -200%;
+            }
+            100% {
+                left: 200%;
+            }
+        }
+
+        .project-card:hover .project-card-front {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card-back {
+            transform: rotateY(180deg);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Modern scrollbar for card back */
+        .project-card-back::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .project-card-back::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .project-card-back::-webkit-scrollbar-thumb {
+            background: rgba(136, 136, 136, 0.3);
+            border-radius: 10px;
+        }
+
+        .project-card-back::-webkit-scrollbar-thumb:hover {
+            background: rgba(136, 136, 136, 0.5);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #F80000 0%, #C70000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 3vw, 24px);
+            color: white;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .flip-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .project-card:nth-child(2) .project-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .project-card:nth-child(3) .project-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .project-info h3 {
+            font-size: clamp(20px, 2.5vw, 24px);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .project-tech {
+            color: var(--oracle-red);
+            font-size: clamp(12px, 1.5vw, 13px);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .dark-mode .project-tech {
+            color: #FF4444;
+        }
+
+        .project-info p {
+            color: var(--text-grey);
+            line-height: 1.6;
+            font-size: clamp(14px, 1.8vw, 15px);
+        }
+
+        .project-card-back h3 {
+            font-size: clamp(22px, 3vw, 26px);
+            margin-bottom: 20px;
+            color: var(--oracle-red);
+        }
+
+        .dark-mode .project-card-back h3 {
+            color: #FF4444;
+        }
+
+        .project-card-back h4 {
+            font-size: clamp(16px, 2vw, 18px);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .project-card-back ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .project-card-back li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-grey);
+            line-height: 1.6;
+        }
+
+        .project-card-back li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--oracle-red);
+        }
+
+        .dark-mode .project-card-back li::before {
+            color: #FF4444;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--oracle-red);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .dark-mode .back-button {
+            background: #FF4444;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+        }
+
+        /* ABOUT SECTION */
+        .about-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.8;
+            color: var(--text-grey);
+        }
+
+        .experience-grid {
+            display: grid;
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .experience-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            transition: all 0.4s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .experience-card.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dark-mode .experience-card {
+            background: transparent;
+        }
+
+        .experience-card:hover {
+            transform: translateX(5px);
+        }
+
+        .experience-card h3 {
+            font-size: clamp(22px, 3vw, 26px);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .experience-company {
+            color: var(--oracle-red);
+            font-size: clamp(14px, 2vw, 16px);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .experience-date {
+            color: var(--text-grey);
+            font-size: clamp(13px, 1.5vw, 14px);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .dark-mode .experience-company {
+            color: #FF4444;
+        }
+
+        .experience-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .experience-card li {
+            color: var(--text-grey);
+            line-height: 1.8;
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            font-size: clamp(14px, 1.8vw, 15px);
+        }
+
+        .experience-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-grey);
+            font-size: 20px;
+        }
+
+        .skills-section {
+            margin-top: 60px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .skills-title {
+            font-size: clamp(26px, 4vw, 32px);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-tag {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50px;
+            font-size: clamp(13px, 1.5vw, 15px);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            opacity: 0;
+            transform: scale(0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.5s;
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        .skill-tag.in-view {
+            opacity: 1;
+            transform: scale(1);
+            animation: skillPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes skillPop {
+            0% {
+                transform: scale(0.8) rotate(-5deg);
+            }
+            50% {
+                transform: scale(1.15) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .dark-mode .skill-tag {
+            background: white;
+            color: black;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.2) translateY(-5px) rotate(-3deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .skill-tag:active {
+            transform: scale(0.95);
+        }
+
+        /* CONTACT SECTION */
+        #contact {
+            background: rgba(0, 0, 0, 0.02);
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .dark-mode #contact {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-light);
+        }
+
+        #contact .section-title {
+            color: var(--text-dark);
+        }
+
+        .dark-mode #contact .section-title {
+            color: var(--text-light);
+        }
+
+        .contact-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            margin-bottom: 40px;
+            color: var(--text-grey);
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: clamp(16px, 2vw, 18px);
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            min-width: 48px;
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .dark-mode .contact-btn {
+            background: white;
+            color: var(--accent);
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .contact-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Magnetic button effect */
+        .contact-btn.magnetic-active {
+            transition: transform 0.15s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        .contact-info {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* CONTACT FORM */
+        .contact-form-container {
+            max-width: 600px;
+            margin: 40px auto 60px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .contact-form-container.active {
+            opacity: 1;
+            max-height: 800px;
+        }
+
+        .contact-form {
+            background: transparent;
+            padding: 40px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .dark-mode .form-group label {
+            color: var(--text-grey);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid var(--border-light);
+            font-size: 16px;
+            font-family: inherit;
+            background: transparent;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .dark-mode .form-group input,
+        .dark-mode .form-group textarea {
+            border-bottom-color: var(--border-dark);
+            color: var(--text-light);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-grey);
+            opacity: 0.5;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-bottom-color: var(--oracle-red);
+        }
+
+        .dark-mode .form-group input:focus,
+        .dark-mode .form-group textarea:focus {
+            border-bottom-color: #FF4444;
+        }
+
+        .form-group input:focus + label,
+        .form-group textarea:focus + label {
+            color: var(--oracle-red);
+        }
+
+        .dark-mode .form-group input:focus + label,
+        .dark-mode .form-group textarea:focus + label {
+            color: #FF4444;
+        }
+
+        /* Animated underline effect */
+        .form-group::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--oracle-red);
+            transition: width 0.3s ease;
+        }
+
+        .dark-mode .form-group::after {
+            background: #FF4444;
+        }
+
+        .form-group:focus-within::after {
+            width: 100%;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            padding-top: 12px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            margin-top: 50px;
+        }
+
+        .form-submit,
+        .form-cancel {
+            border: none;
+            border-radius: 50%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: visible;
+            width: 50px;
+            height: 50px;
+        }
+
+        .form-cancel {
+            font-size: 20px;
+        }
+
+        .form-submit {
+            font-size: 22px;
+            background: var(--oracle-red);
+            color: white;
+            box-shadow: 0 5px 20px rgba(248, 0, 0, 0.2);
+        }
+
+        .dark-mode .form-submit {
+            background: #FF4444;
+        }
+
+        .form-submit i {
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.320, 1);
+            will-change: transform;
+        }
+
+        .form-submit:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(248, 0, 0, 0.4);
+        }
+
+        .form-submit:active {
+            transform: scale(0.95);
+        }
+
+        .form-cancel {
+            background: transparent;
+            color: var(--text-grey);
+            border: 2px solid var(--text-grey);
+            font-size: 20px;
+        }
+
+        .form-cancel:hover {
+            color: var(--text-dark);
+            border-color: var(--text-dark);
+            transform: scale(1.05);
+        }
+
+        .dark-mode .form-cancel:hover {
+            color: var(--text-light);
+            border-color: var(--text-light);
+        }
+
+        .form-cancel:active {
+            transform: scale(0.95);
+        }
+
+        .form-success {
+            text-align: center;
+            padding: 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            margin-top: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .contact-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .contact-item.in-view {
+            opacity: 0.9;
+            transform: translateY(0);
+        }
+
+        .contact-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: clamp(12px, 1.5vw, 14px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-item a {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            font-size: clamp(14px, 1.8vw, 16px);
+            word-break: break-all;
+        }
+
+        .contact-item a:hover {
+            opacity: 0.7;
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            z-index: 50;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* COOKIE NOTIFICATION */
+        .cookie-notification {
+            position: fixed;
+            bottom: max(30px, env(safe-area-inset-bottom, 30px));
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 90;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s ease-out;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: calc(100vw - 40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cookie-notification.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(20px);
+        }
+
+        .dark-mode .cookie-notification {
+            background: rgba(30, 30, 30, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .cookie-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(13px, 1.5vw, 14px);
+            font-weight: 400;
+        }
+
+        .dark-mode .cookie-text {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .cookie-text a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .cookie-text a:hover {
+            opacity: 0.7;
+        }
+
+        .cookie-accept {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: clamp(13px, 1.5vw, 14px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-width: 48px;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .cookie-accept:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cookie-accept:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .scroll-text {
+            font-size: clamp(13px, 1.5vw, 14px);
+            color: var(--text-grey);
+        }
+
+        .scroll-arrow {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--text-grey);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-arrow::after {
+            content: '↓';
+            font-size: 18px;
+            color: var(--text-grey);
+        }
+
+        /* LOADING ANIMATION */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.6s ease;
+        }
+
+        .dark-mode .loader {
+            background: var(--bg-dark);
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-text {
+            font-size: clamp(40px, 10vw, 60px);
+            font-weight: 300;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* MAGNETIC CURSOR */
+        .magnetic-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--oracle-red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+            mix-blend-mode: difference;
+            display: none;
+        }
+
+        .dark-mode .magnetic-cursor {
+            border-color: #FF4444;
+        }
+
+        .magnetic-cursor.hover {
+            width: 50px;
+            height: 50px;
+            border-color: #FF4444;
+            background: rgba(248, 0, 0, 0.1);
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--oracle-red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease;
+            display: none;
+        }
+
+        .dark-mode .cursor-follower {
+            background: #FF4444;
+        }
+
+        /* Show custom cursor only on desktop */
+        @media (min-width: 1024px) and (pointer: fine) {
+            body, a, button {
+                cursor: none;
+            }
+            
+            .magnetic-cursor,
+            .cursor-follower {
+                display: block;
+            }
+        }
+
+        /* Magnetic elements */
+        .magnetic {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* TABLET LANDSCAPE OPTIMIZATIONS */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            section {
+                padding: 80px 30px;
+            }
+            
+            .hero-title {
+                font-size: 60px;
+            }
+            
+            .section-title {
+                font-size: 50px;
+            }
+        }
+
+        /* RESPONSIVE - MOBILE */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 16px;
+                top: max(15px, env(safe-area-inset-top, 15px));
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                font-size: 14px;
+                padding: 10px 8px;
+            }
+
+            .mode-toggle {
+                width: 50px;
+                height: 50px;
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                left: max(20px, env(safe-area-inset-left, 20px));
+            }
+
+            .progress-dots {
+                right: max(15px, env(safe-area-inset-right, 15px));
+                gap: 12px;
+            }
+
+            .progress-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .progress-dot::after {
+                display: none;
+            }
+
+            section {
+                padding: 80px 16px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .skills-container {
+                gap: 10px;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .cookie-notification {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 12px;
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                border-radius: 20px;
+            }
+
+            .cookie-text {
+                text-align: center;
+            }
+
+            .scroll-indicator {
+                bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            }
+
+            .location-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .location-item {
+                display: block;
+            }
+        }
+
+        /* VERY SMALL PHONES */
+        @media (max-width: 375px) {
+            header {
+                padding: 8px 12px;
+            }
+            
+            nav {
+                gap: 6px;
+            }
+
+            nav a {
+                font-size: 13px;
+                padding: 10px 6px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .dynamic-text {
+                display: block;
+                margin: 10px auto 0;
+                width: fit-content;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            section {
+                padding: 70px 12px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .projects-grid {
+                gap: 16px;
+            }
+
+            .project-image {
+                height: 150px;
+            }
+        }
+
+        /* LARGE SCREENS */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1400px;
+            }
+            
+            section {
+                padding: 120px 60px;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            section {
+                padding: 140px 80px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .project-image {
+                height: 300px;
+            }
+        }
+
+        /* ULTRA-WIDE SCREENS */
+        @media (min-width: 2560px) {
+            .container {
+                max-width: 2000px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            .noise,
+            .mode-toggle,
+            .cookie-notification,
+            .scroll-indicator,
+            .magnetic-cursor,
+            .cursor-follower,
+            .loader,
+            .progress-dots {
+                display: none !important;
+            }
+            
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* REDUCED MOTION */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* HIGH CONTRAST MODE */
+        @media (prefers-contrast: high) {
+            .project-card-front,
+            .project-card-back,
+            header,
+            .mode-toggle {
+                border-width: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-text">TK</div>
+    </div>
+
+    <!-- NOISE TEXTURE -->
+    <div class="noise"></div>
+
+    <!-- PARTICLES -->
+    <div class="particles" id="particles"></div>
+
+    <!-- MAGNETIC CURSOR -->
+    <div class="magnetic-cursor" id="magneticCursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
+
+    <!-- HEADER -->
+    <header id="header">
+        <nav role="navigation" aria-label="Main navigation">
+            <a href="#home" class="nav-link active" data-section="home" aria-label="Go to home section">Home</a>
+            <a href="#work" class="nav-link" data-section="work" aria-label="Go to work section">Work</a>
+            <a href="#about" class="nav-link" data-section="about" aria-label="Go to about section">About</a>
+            <a href="#contact" class="nav-link" data-section="contact" aria-label="Go to contact section">Contact</a>
+        </nav>
+    </header>
+
+    <!-- MODE TOGGLE -->
+    <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon mode-icon" aria-hidden="true"></i>
+    </button>
+
+    <!-- AUDIO TOGGLE -->
+    <button class="audio-toggle" id="audioToggle" aria-label="Toggle bloom sounds">
+        <i class="fas fa-volume-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- PROGRESS DOTS -->
+    <div class="progress-dots">
+        <div class="progress-dot active" data-section="home" data-label="Home"></div>
+        <div class="progress-dot" data-section="work" data-label="Work"></div>
+        <div class="progress-dot" data-section="about" data-label="About"></div>
+        <div class="progress-dot" data-section="contact" data-label="Contact"></div>
+    </div>
+
+    <!-- COOKIE NOTIFICATION -->
+    <div class="cookie-notification" id="cookieNotification" role="dialog" aria-label="Cookie notification">
+        <span class="cookie-text">This website uses <a>cookies</a>.</span>
+        <button class="cookie-accept" id="cookieAccept" aria-label="Accept cookies">Accept</button>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator" id="scrollIndicator" role="button" aria-label="Scroll to next section" tabindex="0">
+        <span class="scroll-text">Scroll</span>
+        <div class="scroll-arrow" aria-hidden="true"></div>
+    </div>
+
+    <!-- SECTIONS -->
+    <section id="home" class="active">
+        <div class="container">
+            <h1 class="hero-title" id="heroTitle">Tharun Kommaddi</h1>
+            <p class="subtitle">
+                Crafting Enterprise Solutions with 
+                <span class="dynamic-text" id="dynamicText">Oracle APEX</span>
+            </p>
+            <p class="hero-description">
+                Oracle APEX Developer with over 2 years of experience, specializing in scalable 
+                web application solutions at EMANO Development GmbH. Proven expertise in designing 
+                and implementing end-to-end database-driven applications with a focus on performance 
+                optimization and business logic integration.
+            </p>
+            <div class="location-info">
+                <span class="location-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Chemnitz, Germany</span>
+                <span aria-hidden="true">•</span>
+                <span class="location-item"><i class="fas fa-graduation-cap" aria-hidden="true"></i> M.Sc. Computer Science</span>
+                <span aria-hidden="true">•</span>
+                <span class="location-item"><i class="fas fa-briefcase" aria-hidden="true"></i> Oracle APEX Developer</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <div class="container">
+            <h2 class="section-title">Projects Portfolio</h2>
+            <p style="text-align: center; color: var(--text-grey); margin-bottom: 20px;">
+                Enterprise-level solutions delivered with precision and innovation
+            </p>
+            
+            <!-- PROJECT FILTERS -->
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="apex">Oracle APEX</button>
+                <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                <button class="filter-btn" data-filter="data">Data Analysis</button>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <article class="project-card" data-project="1" data-category="apex">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <div class="project-image" aria-label="CARMAH Project">
+                                CARMAH
+                                <div class="flip-icon">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Carmah Project</h3>
+                                <p class="project-tech">Oracle APEX • PL/SQL • JavaScript</p>
+                                <p>Developed comprehensive web application modules using Oracle APEX with advanced reporting modules featuring real-time data visualization and automated complex business workflows.</p>
+                            </div>
+                        </div>
+                        <div class="project-card-back">
+                            <h3>Carmah Project Details</h3>
+                            <h4>Key Features:</h4>
+                            <ul>
+                                <li>Real-time data visualization dashboards</li>
+                                <li>Automated workflow management system</li>
+                                <li>Advanced reporting with custom SQL queries</li>
+                                <li>RESTful API integration</li>
+                                <li>Responsive mobile-friendly interface</li>
+                            </ul>
+                            <h4>Technologies:</h4>
+                            <ul>
+                                <li>Oracle APEX 22.1</li>
+                                <li>PL/SQL stored procedures</li>
+                                <li>JavaScript & jQuery</li>
+                                <li>Oracle Database 19c</li>
+                            </ul>
+                            <button class="back-button" onclick="event.stopPropagation()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card" data-project="2" data-category="apex">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <div class="project-image" aria-label="REGINDEX Project">
+                                REGINDEX
+                                <div class="flip-icon">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Regindex Project</h3>
+                                <p class="project-tech">Oracle APEX • PL/SQL • Jasper Reports</p>
+                                <p>Built enterprise-level reporting and data management solutions with streamlined workflows to drive operational efficiency and enhanced user experience.</p>
+                            </div>
+                        </div>
+                        <div class="project-card-back">
+                            <h3>Regindex Project Details</h3>
+                            <h4>Key Features:</h4>
+                            <ul>
+                                <li>Enterprise data management system</li>
+                                <li>Jasper Reports integration</li>
+                                <li>Custom PDF report generation</li>
+                                <li>Multi-user role management</li>
+                                <li>Data import/export functionality</li>
+                            </ul>
+                            <h4>Technologies:</h4>
+                            <ul>
+                                <li>Oracle APEX</li>
+                                <li>PL/SQL packages</li>
+                                <li>Jasper Reports Server</li>
+                                <li>Oracle REST Data Services</li>
+                            </ul>
+                            <button class="back-button" onclick="event.stopPropagation()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card" data-project="3" data-category="ml data">
+                    <div class="project-card-inner">
+                        <div class="project-card-front">
+                            <div class="project-image" aria-label="Analytics Project">
+                                Analytics
+                                <div class="flip-icon">
+                                    <i class="fas fa-info"></i>
+                                </div>
+                            </div>
+                            <div class="project-info">
+                                <h3>Data Analysis & ML</h3>
+                                <p class="project-tech">Python • Power BI • Machine Learning</p>
+                                <p>World Economic Outlook Data Analysis with interactive dashboards and Customer Segmentation Analytics using clustering algorithms for business intelligence.</p>
+                            </div>
+                        </div>
+                        <div class="project-card-back">
+                            <h3>Analytics Project Details</h3>
+                            <h4>Key Features:</h4>
+                            <ul>
+                                <li>Interactive Power BI dashboards</li>
+                                <li>Customer segmentation using K-Means</li>
+                                <li>Predictive analytics models</li>
+                                <li>Economic trend analysis</li>
+                                <li>Automated reporting pipelines</li>
+                            </ul>
+                            <h4>Technologies:</h4>
+                            <ul>
+                                <li>Python (Pandas, Scikit-learn)</li>
+                                <li>Power BI Desktop</li>
+                                <li>Machine Learning algorithms</li>
+                                <li>SQL Server Integration</li>
+                            </ul>
+                            <button class="back-button" onclick="event.stopPropagation()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <!-- VIDEO FLOWER BLOOM BACKGROUND -->
+        <div class="flower-background">
+            <video id="flowerVideo" muted playsinline preload="auto">
+                <source src="manifesto-ogvideo.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <div class="container">
+            <h2 class="section-title">Professional Journey</h2>
+            <p class="about-intro">
+                Committed to continuous professional growth by integrating emerging technologies 
+                and adopting innovative approaches to Oracle APEX development. Experienced in mentoring 
+                and guiding junior developers, fostering best practices across development teams.
+            </p>
+            
+            <div class="experience-grid">
+                <article class="experience-card">
+                    <h3>Oracle APEX Developer</h3>
+                    <p class="experience-company">EMANO Development GmbH • Germany</p>
+                    <div class="experience-date">June 2023 – Present</div>
+                    <ul>
+                        <li>Architecting and delivering comprehensive Oracle APEX applications with complex business logic</li>
+                        <li>Developing dynamic, interactive reports and dashboards using advanced Oracle APEX components</li>
+                        <li>Designing and optimizing PL/SQL packages, procedures, functions, and triggers</li>
+                        <li>Creating responsive web interfaces with HTML5, CSS3, JavaScript, and jQuery</li>
+                        <li>Integrating Jasper Reports for enterprise-grade reporting solutions</li>
+                        <li>Tuning complex SQL queries to enhance performance in demanding transactional systems</li>
+                    </ul>
+                </article>
+                
+                <article class="experience-card">
+                    <h3>Junior Machine Learning Engineer</h3>
+                    <p class="experience-company">EngiGyan Techno PVT LTD • India</p>
+                    <div class="experience-date">April 2019 – September 2019</div>
+                    <ul>
+                        <li>Led design and deployment of machine learning models in production environments</li>
+                        <li>Collaborated with 7-member ML team on data analysis and model optimization</li>
+                        <li>Conducted quality assurance assessments to validate model performance</li>
+                        <li>Implemented ML and DL frameworks for ongoing model maintenance</li>
+                    </ul>
+                </article>
+
+                <article class="experience-card">
+                    <h3>Data Analyst</h3>
+                    <p class="experience-company">EngiGyan Techno PVT LTD • India</p>
+                    <div class="experience-date">May 2018 – August 2018</div>
+                    <ul>
+                        <li>Developed interactive dashboards and data visualization tools</li>
+                        <li>Managed multiple projects within 5-member analyst team</li>
+                        <li>Created detailed design presentations for client proposals</li>
+                        <li>Provided data-driven recommendations for business strategies</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="skills-section">
+                <h3 class="skills-title">Technical Expertise</h3>
+                <div class="skills-container" role="list" aria-label="Technical skills">
+                    <span class="skill-tag" role="listitem">Oracle APEX</span>
+                    <span class="skill-tag" role="listitem">PL/SQL</span>
+                    <span class="skill-tag" role="listitem">Oracle Database</span>
+                    <span class="skill-tag" role="listitem">SQL</span>
+                    <span class="skill-tag" role="listitem">HTML5</span>
+                    <span class="skill-tag" role="listitem">CSS3</span>
+                    <span class="skill-tag" role="listitem">JavaScript</span>
+                    <span class="skill-tag" role="listitem">jQuery</span>
+                    <span class="skill-tag" role="listitem">Jasper Reports</span>
+                    <span class="skill-tag" role="listitem">Power BI</span>
+                    <span class="skill-tag" role="listitem">Python</span>
+                    <span class="skill-tag" role="listitem">Machine Learning</span>
+                    <span class="skill-tag" role="listitem">Git</span>
+                    <span class="skill-tag" role="listitem">REST APIs</span>
+                    <span class="skill-tag" role="listitem">AWS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Build Something</h2>
+            <p class="contact-subtitle">Have a project in mind? Let's discuss how I can help.</p>
+            <a href="mailto:tharunkommaddi@gmail.com" class="contact-btn" id="contactBtn">Get In Touch</a>
+            
+            <!-- CONTACT FORM -->
+            <div class="contact-form-container" id="contactFormContainer">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="Project Discussion">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="form-cancel" id="formCancel">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button type="submit" class="form-submit" id="formSubmit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Email</strong>
+                    <a href="mailto:tharunkommaddi@gmail.com">tharunkommaddi@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Phone</strong>
+                    <a href="tel:+4917647670970">+49 176 4767 0970</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Location</strong>
+                    <span>Chemnitz, Germany</span>
+                </div>
+                <div class="contact-item">
+                    <strong>LinkedIn</strong>
+                    <a href="https://www.linkedin.com/in/tharunkommaddi/" target="_blank" rel="noopener noreferrer">linkedin.com/in/tharunkommaddi</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // CREATE PARTICLES
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth > 768 ? 30 : 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+
+        // CREATE FLOATING SHAPES
+        function createFloatingShapes() {
+            const sections = document.querySelectorAll('section');
+            const shapes = ['○', '△', '□', '◇', '▽'];
+            
+            sections.forEach(section => {
+                for (let i = 0; i < 3; i++) {
+                    const shape = document.createElement('div');
+                    shape.className = 'floating-shape';
+                    shape.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                    shape.style.fontSize = (Math.random() * 100 + 50) + 'px';
+                    shape.style.left = Math.random() * 80 + 10 + '%';
+                    shape.style.top = Math.random() * 80 + 10 + '%';
+                    shape.style.animationDelay = Math.random() * 5 + 's';
+                    shape.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                    section.appendChild(shape);
+                }
+            });
+        }
+        
+        createFloatingShapes();
+
+        // TEXT REVEAL ANIMATION - Letter by letter
+        function initTextReveal() {
+            const heroTitle = document.getElementById('heroTitle');
+            const text = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            text.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                span.style.animationDelay = `${0.3 + index * 0.05}s`;
+                heroTitle.appendChild(span);
+            });
+        }
+        
+        initTextReveal();
+
+        // LOADER
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // DARK MODE TOGGLE
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+        const modeIcon = document.querySelector('.mode-icon');
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            body.classList.add('dark-mode');
+            modeIcon.classList.remove('fa-moon');
+            modeIcon.classList.add('fa-lightbulb');
+        }
+
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                modeIcon.classList.remove('fa-moon');
+                modeIcon.classList.add('fa-lightbulb');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                modeIcon.classList.remove('fa-lightbulb');
+                modeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // DYNAMIC TEXT ROTATION
+        const dynamicText = document.getElementById('dynamicText');
+        const texts = ['Oracle APEX', 'PL/SQL', 'JavaScript', 'Enterprise Solutions', 'Innovation'];
+        let currentIndex = 0;
+
+        setInterval(() => {
+            dynamicText.style.opacity = '0';
+            dynamicText.style.transform = 'translateY(-10px)';
+            
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % texts.length;
+                dynamicText.textContent = texts[currentIndex];
+                dynamicText.style.opacity = '1';
+                dynamicText.style.transform = 'translateY(0)';
+            }, 300);
+        }, 3000);
+
+        dynamicText.style.transition = 'all 0.3s ease';
+
+        // PROJECT FILTERING
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter projects
+                projectCards.forEach(card => {
+                    const categories = card.getAttribute('data-category');
+                    
+                    if (filter === 'all') {
+                        card.classList.remove('hidden');
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        if (categories.includes(filter)) {
+                            card.classList.remove('hidden');
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 10);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.9)';
+                            setTimeout(() => {
+                                card.classList.add('hidden');
+                            }, 300);
+                        }
+                    }
+                });
+            });
+        });
+
+        // SECTION NAVIGATION WITH SWIPE SUPPORT
+        const sections = ['home', 'work', 'about', 'contact'];
+        let currentSection = 0;
+        const navLinks = document.querySelectorAll('.nav-link');
+        const progressDots = document.querySelectorAll('.progress-dot');
+
+        function goToSection(index, direction = 'right') {
+            if (index < 0 || index >= sections.length) return;
+            
+            const currentSectionEl = document.getElementById(sections[currentSection]);
+            const nextSectionEl = document.getElementById(sections[index]);
+            
+            // Remove active class from current section
+            currentSectionEl.classList.remove('active');
+            
+            // Add slide out animation
+            if (direction === 'right') {
+                currentSectionEl.classList.add('slide-out-left');
+                nextSectionEl.classList.add('slide-in-right');
+            } else {
+                currentSectionEl.classList.add('slide-out-right');
+                nextSectionEl.classList.add('slide-in-left');
+            }
+            
+            // Show next section
+            nextSectionEl.classList.add('active');
+            
+            // Clean up animations
+            setTimeout(() => {
+                currentSectionEl.classList.remove('slide-out-left', 'slide-out-right');
+                nextSectionEl.classList.remove('slide-in-left', 'slide-in-right');
+            }, 500);
+            
+            currentSection = index;
+            updateNavigation();
+            
+            // Scroll to top of section
+            nextSectionEl.scrollTop = 0;
+        }
+
+        function updateNavigation() {
+            navLinks.forEach((link, index) => {
+                if (index === currentSection) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            progressDots.forEach((dot, index) => {
+                if (index === currentSection) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Navigation click handlers
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const direction = index > currentSection ? 'right' : 'left';
+                goToSection(index, direction);
+            });
+        });
+
+        // Progress dots click handlers
+        progressDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const direction = index > currentSection ? 'right' : 'left';
+                goToSection(index, direction);
+            });
+        });
+
+        // SWIPE GESTURE SUPPORT
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const horizontalSwipe = Math.abs(touchEndX - touchStartX);
+            const verticalSwipe = Math.abs(touchEndY - touchStartY);
+            
+            // Only trigger if horizontal swipe is greater than vertical (not scrolling)
+            if (horizontalSwipe > verticalSwipe && horizontalSwipe > swipeThreshold) {
+                if (touchEndX < touchStartX) {
+                    // Swipe left - next section
+                    goToSection(currentSection + 1, 'right');
+                } else {
+                    // Swipe right - previous section
+                    goToSection(currentSection - 1, 'left');
+                }
+            }
+        }
+
+        // PROJECT CARD FLIP
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Don't flip if clicking the back button
+                if (e.target.classList.contains('back-button') || e.target.closest('.back-button')) {
+                    this.classList.remove('flipped');
+                    return;
+                }
+                this.classList.toggle('flipped');
+            });
+            
+            // Handle back button specifically
+            const backButton = card.querySelector('.back-button');
+            if (backButton) {
+                backButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    card.classList.remove('flipped');
+                });
+            }
+        });
+
+        // SCROLL TRIGGERED ANIMATIONS
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, observerOptions);
+
+        // Observe experience cards
+        document.querySelectorAll('.experience-card').forEach(card => {
+            scrollObserver.observe(card);
+        });
+
+        // Observe skill tags with stagger
+        document.querySelectorAll('.skill-tag').forEach((tag, index) => {
+            setTimeout(() => {
+                scrollObserver.observe(tag);
+            }, index * 50);
+        });
+
+        // Observe contact items
+        document.querySelectorAll('.contact-item').forEach((item, index) => {
+            setTimeout(() => {
+                scrollObserver.observe(item);
+            }, index * 100);
+        });
+
+        // SCROLL INDICATOR CLICK
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        scrollIndicator.addEventListener('click', () => {
+            goToSection(currentSection + 1, 'right');
+        });
+
+        scrollIndicator.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                scrollIndicator.click();
+            }
+        });
+
+        // COOKIE NOTIFICATION
+        const cookieNotification = document.getElementById('cookieNotification');
+        const cookieAccept = document.getElementById('cookieAccept');
+
+        if (localStorage.getItem('cookiesAccepted') === 'true') {
+            cookieNotification.classList.add('hidden');
+        }
+
+        cookieAccept.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieNotification.classList.add('hidden');
+        });
+
+        // CONTACT FORM TOGGLE
+        const contactBtn = document.getElementById('contactBtn');
+        const contactFormContainer = document.getElementById('contactFormContainer');
+        const formCancel = document.getElementById('formCancel');
+        const contactForm = document.getElementById('contactForm');
+
+        contactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            contactFormContainer.classList.toggle('active');
+            
+            // Scroll form into view
+            if (contactFormContainer.classList.contains('active')) {
+                setTimeout(() => {
+                    contactFormContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
+            }
+        });
+
+        formCancel.addEventListener('click', () => {
+            contactFormContainer.classList.remove('active');
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // Create mailto link with form data
+            const mailtoLink = `mailto:tharunkommaddi@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.className = 'form-success';
+            successMsg.textContent = 'Opening your email client...';
+            contactForm.appendChild(successMsg);
+            
+            // Reset form after delay
+            setTimeout(() => {
+                contactForm.reset();
+                contactFormContainer.classList.remove('active');
+                successMsg.remove();
+            }, 2000);
+        });
+
+        // MAGNETIC BUTTON EFFECT
+        function initMagneticButtons() {
+            const buttons = document.querySelectorAll('.contact-btn, .filter-btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.classList.add('magnetic-active');
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.classList.remove('magnetic-active');
+                    this.style.transform = '';
+                });
+                
+                button.addEventListener('mousemove', function(e) {
+                    if (this.classList.contains('magnetic-active')) {
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        const distance = Math.sqrt(x * x + y * y);
+                        const maxDistance = 100;
+                        
+                        if (distance < maxDistance) {
+                            const strength = (maxDistance - distance) / maxDistance * 0.3;
+                            this.style.transform = `translate(${x * strength}px, ${y * strength}px) scale(1.05)`;
+                        }
+                    }
+                });
+            });
+        }
+        
+        initMagneticButtons();
+
+        // ADVANCED MAGNETIC EFFECT FOR SEND BUTTON (with directional icon movement)
+        function initSendButtonMagnetic() {
+            const sendButton = document.getElementById('formSubmit');
+            if (!sendButton) return;
+            
+            const sendIcon = sendButton.querySelector('i');
+            
+            sendButton.addEventListener('mouseenter', function() {
+                this.classList.add('magnetic-active');
+            });
+            
+            sendButton.addEventListener('mouseleave', function() {
+                this.classList.remove('magnetic-active');
+                this.style.transform = '';
+                if (sendIcon) {
+                    sendIcon.style.transform = '';
+                }
+            });
+            
+            sendButton.addEventListener('mousemove', function(e) {
+                if (this.classList.contains('magnetic-active')) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const distance = Math.sqrt(x * x + y * y);
+                    const maxDistance = 150;
+                    
+                    if (distance < maxDistance) {
+                        // Button attraction
+                        const buttonStrength = (maxDistance - distance) / maxDistance * 0.4;
+                        this.style.transform = `translate(${x * buttonStrength}px, ${y * buttonStrength}px) scale(1.15)`;
+                        
+                        // Icon moves in the direction of hover
+                        if (sendIcon) {
+                            const iconStrength = 0.25;
+                            sendIcon.style.transform = `translate(${x * iconStrength}px, ${y * iconStrength}px)`;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize send button magnetic effect after form is loaded
+        setTimeout(initSendButtonMagnetic, 100);
+
+        // MAGNETIC CURSOR EFFECT (Desktop only with fine pointer)
+        const isDesktop = window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+        
+        if (isDesktop) {
+            const magneticCursor = document.getElementById('magneticCursor');
+            const cursorFollower = document.getElementById('cursorFollower');
+            let cursorX = 0, cursorY = 0;
+            let followerX = 0, followerY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+                
+                magneticCursor.style.left = cursorX + 'px';
+                magneticCursor.style.top = cursorY + 'px';
+            });
+
+            function animateFollower() {
+                followerX += (cursorX - followerX) * 0.15;
+                followerY += (cursorY - followerY) * 0.15;
+                
+                cursorFollower.style.left = followerX + 'px';
+                cursorFollower.style.top = followerY + 'px';
+                
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+
+            const magneticElements = document.querySelectorAll('a, button, .project-card, .skill-tag');
+            
+            magneticElements.forEach(element => {
+                element.classList.add('magnetic');
+                
+                element.addEventListener('mouseenter', () => {
+                    magneticCursor.classList.add('hover');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    magneticCursor.classList.remove('hover');
+                    element.style.transform = '';
+                });
+                
+                element.addEventListener('mousemove', (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const strength = 0.2;
+                    element.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+                });
+            });
+
+            // Enhanced project card 3D effect (only on front cards)
+            document.querySelectorAll('.project-card-front').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const rotateX = (y / rect.height) * 8;
+                    const rotateY = (x / rect.width) * -8;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                goToSection(currentSection + 1, 'right');
+            } else if (e.key === 'ArrowLeft') {
+                goToSection(currentSection - 1, 'left');
+            }
+        });
+
+        console.log('✓ Enhanced interactive portfolio loaded!');
+
+        // VIDEO FLOWER BLOOM SCROLL ANIMATION WITH AUDIO
+        const aboutSection = document.getElementById('about');
+        const flowerVideo = document.getElementById('flowerVideo');
+        const audioToggle = document.getElementById('audioToggle');
+        const audioIcon = audioToggle ? audioToggle.querySelector('i') : null;
+        let audioEnabled = true;
+
+        // Audio Context for paper wrapping/rustling sounds
+        let audioContext;
+        let isAudioInitialized = false;
+        let lastScrollTime = 0;
+        let scrollVelocity = 0;
+
+        function initAudio() {
+            if (!isAudioInitialized && audioEnabled) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    isAudioInitialized = true;
+                } catch (e) {
+                    console.log('Audio not available');
+                }
+            }
+        }
+
+        // Generate paper rustling/wrapping sound based on scroll speed
+        function playRustleSound(velocity) {
+            if (!audioEnabled || !isAudioInitialized || !audioContext) return;
+
+            try {
+                // Create noise buffer for rustling effect
+                const bufferSize = audioContext.sampleRate * 0.1;
+                const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                const output = buffer.getChannelData(0);
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                const noise = audioContext.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1000 + (velocity * 500);
+                filter.Q.value = 1;
+
+                const gainNode = audioContext.createGain();
+                const volume = Math.min(velocity * 0.015, 0.03);
+                
+                noise.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.02);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+
+                noise.start(audioContext.currentTime);
+                noise.stop(audioContext.currentTime + 0.15);
+            } catch (e) {
+                console.log('Audio playback error');
+            }
+        }
+
+        // Track scroll progress and control video playback
+        function updateVideoBloom() {
+            if (!aboutSection.classList.contains('active') || !flowerVideo) return;
+
+            const scrollTop = aboutSection.scrollTop;
+            const scrollHeight = aboutSection.scrollHeight - aboutSection.clientHeight;
+            const scrollPercent = Math.max(0, Math.min(scrollTop / scrollHeight, 1));
+
+            // Calculate scroll velocity
+            const currentTime = Date.now();
+            const timeDelta = currentTime - lastScrollTime;
+            if (timeDelta > 0) {
+                const scrollDelta = Math.abs(scrollTop - (flowerVideo.dataset.lastScroll || 0));
+                scrollVelocity = scrollDelta / timeDelta * 100;
+            }
+            lastScrollTime = currentTime;
+            flowerVideo.dataset.lastScroll = scrollTop;
+
+            // Scrub video based on scroll position
+            if (flowerVideo.duration) {
+                const targetTime = scrollPercent * flowerVideo.duration;
+                flowerVideo.currentTime = targetTime;
+            }
+
+            // Play rustling sound based on scroll velocity
+            if (scrollVelocity > 0.5) {
+                playRustleSound(scrollVelocity);
+            }
+        }
+
+        // Listen to scroll events
+        if (aboutSection) {
+            aboutSection.addEventListener('scroll', updateVideoBloom, { passive: true });
+        }
+
+        // Audio toggle functionality
+        if (audioToggle && audioIcon) {
+            audioToggle.addEventListener('click', () => {
+                audioEnabled = !audioEnabled;
+                
+                if (audioEnabled) {
+                    audioIcon.classList.remove('fa-volume-mute');
+                    audioIcon.classList.add('fa-volume-up');
+                    audioToggle.classList.remove('muted');
+                    initAudio();
+                } else {
+                    audioIcon.classList.remove('fa-volume-up');
+                    audioIcon.classList.add('fa-volume-mute');
+                    audioToggle.classList.add('muted');
+                }
+            });
+        }
+
+        // Initialize audio on first user interaction
+        document.addEventListener('click', function initAudioOnInteraction() {
+            initAudio();
+        }, { once: true });
+
+        // Load video metadata
+        if (flowerVideo) {
+            flowerVideo.addEventListener('loadedmetadata', () => {
+                flowerVideo.currentTime = 0;
+            });
+        }
+
+        // Reset video when navigating away from About section
+        const sectionNavLinks = document.querySelectorAll('.nav-link');
+        sectionNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const section = link.getAttribute('data-section');
+                if (section !== 'about' && flowerVideo) {
+                    flowerVideo.currentTime = 0;
+                    scrollVelocity = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
