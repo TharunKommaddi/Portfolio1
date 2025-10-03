@@ -1745,50 +1745,52 @@
         /* BACKGROUND MUSIC TOGGLE */
         .music-toggle {
             position: fixed;
-                bottom: max(100px, env(safe-area-inset-bottom, 100px));
-                    left: max(30px, env(safe-area-inset-left, 30px));
-                        width: 50px;
-                            height: 50px;
-                                background: var(--oracle-red);
-                                    color: white;
-                                        border: none;
-                                            border-radius: 50%;
-                                                cursor: pointer;
-                                                    display: flex;
-                                                        align-items: center;
-                                                            justify-content: center;
-                                                                font-size: 20px;
-                                                                    box-shadow: 0 4px 15px rgba(248, 0, 0, 0.3);
-                                                                        transition: all 0.3s ease;
-                                                                            z-index: 99;
-                                                                                animation: musicPulse 2s infinite;
-                                                                                }
+            bottom: max(100px, env(safe-area-inset-bottom, 100px));
+            left: max(30px, env(safe-area-inset-left, 30px));
+            width: 50px;
+            height: 50px;
+            background: var(--oracle-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(248, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 99;
+            animation: musicPulse 2s infinite;
+        }
+        
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(248, 0, 0, 0.4);
+        }
+        
+        .music-toggle.muted {
+            opacity: 0.5;
+            animation: none;
+        }
+        
+        .dark-mode .music-toggle {
+            background: white;
+            color: black;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-mode .music-toggle:hover {
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
 
-                                                                                @keyframes musicPulse {
-                                                                                    0%, 100% { transform: scale(1); }
-                                                                                        50% { transform: scale(1.05); }
-                                                                                        }
 
-                                                                                        .music-toggle:hover {
-                                                                                            transform: scale(1.1);
-                                                                                                box-shadow: 0 6px 20px rgba(248, 0, 0, 0.4);
-                                                                                                }
-
-                                                                                                .music-toggle.muted {
-                                                                                                    opacity: 0.5;
-                                                                                                        animation: none;
-                                                                                                        }
-
-                                                                                                        .dark-mode .music-toggle {
-                                                                                                            background: white;
-                                                                                                                color: black;
-                                                                                                                    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-                                                                                                                    }
-
-                                                                                                                    .dark-mode .music-toggle:hover {
-                                                                                                                        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
-                                                                                                                        }
-
+       
         /* TOAST NOTIFICATIONS */
         .toast {
             position: fixed;
@@ -2514,21 +2516,21 @@
     <!-- BACKGROUND MUSIC TOGGLE -->
     <button class="music-toggle" id="musicToggle" aria-label="Toggle background music">
         <i class="fas fa-music"></i>
-        </button>
+    </button>
 
-        <!-- SECTION BACKGROUND MUSIC -->
-        <audio id="homeMusic" loop preload="auto">
-            <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_4037ff50b9.mp3" type="audio/mpeg">
-            </audio>
-            <audio id="workMusic" loop preload="auto">
-                <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
-                </audio>
-                <audio id="aboutMusic" loop preload="auto">
-                    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3" type="audio/mpeg">
-                    </audio>
-                    <audio id="contactMusic" loop preload="auto">
-                        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c1538d8e7.mp3" type="audio/mpeg">
-                        </audio>
+    <!-- SECTION BACKGROUND MUSIC -->
+    <audio id="homeMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_4037ff50b9.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="workMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="aboutMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="contactMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c1538d8e7.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- MODE TOGGLE -->
     <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">
@@ -3466,81 +3468,84 @@
 
         console.log('✓ Enhanced interactive portfolio loaded!');
 
+
         // BACKGROUND MUSIC SYSTEM - Different music for each section
         const musicToggle = document.getElementById('musicToggle');
         const sectionMusic = {
             0: document.getElementById('homeMusic'),
-                1: document.getElementById('workMusic'),
-                    2: document.getElementById('aboutMusic'),
-                        3: document.getElementById('contactMusic')
-                        };
+            1: document.getElementById('workMusic'),
+            2: document.getElementById('aboutMusic'),
+            3: document.getElementById('contactMusic')
+        };
+        
+        let currentlyPlayingMusic = null;
+        let musicEnabled = true;
+        
+        Object.values(sectionMusic).forEach(audio => {
+            if (audio) audio.volume = 0.25;
+        });
+        
+        function switchSectionMusic(sectionIndex) {
+            if (!musicEnabled) return;
+            
+            if (currentlyPlayingMusic && currentlyPlayingMusic !== sectionMusic[sectionIndex]) {
+                const fadeOut = setInterval(() => {
+                    if (currentlyPlayingMusic.volume > 0.05) {
+                        currentlyPlayingMusic.volume -= 0.05;
+                    } else {
+                        currentlyPlayingMusic.pause();
+                        currentlyPlayingMusic.currentTime = 0;
+                        currentlyPlayingMusic.volume = 0.25;
+                        clearInterval(fadeOut);
+                    }
+                }, 50);
+            }
+            
+            const newMusic = sectionMusic[sectionIndex];
+            if (newMusic && newMusic !== currentlyPlayingMusic) {
+                newMusic.volume = 0;
+                newMusic.play().catch(err => console.log('Music blocked'));
+                
+                const fadeIn = setInterval(() => {
+                    if (newMusic.volume < 0.2) {
+                        newMusic.volume += 0.05;
+                    } else {
+                        newMusic.volume = 0.25;
+                        clearInterval(fadeIn);
+                    }
+                }, 50);
+                
+                currentlyPlayingMusic = newMusic;
+            }
+        }
+        
+        if (musicToggle) {
+            musicToggle.addEventListener('click', () => {
+                musicEnabled = !musicEnabled;
+                
+                if (musicEnabled) {
+                    musicToggle.querySelector('i').className = 'fas fa-music';
+                    musicToggle.classList.remove('muted');
+                    switchSectionMusic(currentSection);
+                } else {
+                    musicToggle.querySelector('i').className = 'fas fa-volume-mute';
+                    musicToggle.classList.add('muted');
+                    if (currentlyPlayingMusic) {
+                        currentlyPlayingMusic.pause();
+                    }
+                }
+            });
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (musicEnabled) switchSectionMusic(0);
+            }, 2000);
+        });
+        
 
-                        let currentlyPlayingMusic = null;
-                        let musicEnabled = true;
+        
 
-                        Object.values(sectionMusic).forEach(audio => {
-                            if (audio) audio.volume = 0.25;
-                            });
-
-                            function switchSectionMusic(sectionIndex) {
-                                if (!musicEnabled) return;
-                                    
-                                        if (currentlyPlayingMusic && currentlyPlayingMusic !== sectionMusic[sectionIndex]) {
-                                                const fadeOut = setInterval(() => {
-                                                            if (currentlyPlayingMusic.volume > 0.05) {
-                                                                            currentlyPlayingMusic.volume -= 0.05;
-                                                                                        } else {
-                                                                                                        currentlyPlayingMusic.pause();
-                                                                                                                        currentlyPlayingMusic.currentTime = 0;
-                                                                                                                                        currentlyPlayingMusic.volume = 0.25;
-                                                                                                                                                        clearInterval(fadeOut);
-                                                                                                                                                                    }
-                                                                                                                                                                            }, 50);
-                                                                                                                                                                                }
-                                                                                                                                                                                    
-                                                                                                                                                                                        const newMusic = sectionMusic[sectionIndex];
-                                                                                                                                                                                            if (newMusic && newMusic !== currentlyPlayingMusic) {
-                                                                                                                                                                                                    newMusic.volume = 0;
-                                                                                                                                                                                                            newMusic.play().catch(err => console.log('Music blocked'));
-                                                                                                                                                                                                                    
-                                                                                                                                                                                                                            const fadeIn = setInterval(() => {
-                                                                                                                                                                                                                                        if (newMusic.volume < 0.2) {
-                                                                                                                                                                                                                                                        newMusic.volume += 0.05;
-                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                                    newMusic.volume = 0.25;
-                                                                                                                                                                                                                                                                                                    clearInterval(fadeIn);
-                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                        }, 50);
-                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                        currentlyPlayingMusic = newMusic;
-                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                            }
-
-                                                                                                                                                                                                                                                                                                                                            if (musicToggle) {
-                                                                                                                                                                                                                                                                                                                                                musicToggle.addEventListener('click', () => {
-                                                                                                                                                                                                                                                                                                                                                        musicEnabled = !musicEnabled;
-                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                        if (musicEnabled) {
-                                                                                                                                                                                                                                                                                                                                                                                    musicToggle.querySelector('i').className = 'fas fa-music';
-                                                                                                                                                                                                                                                                                                                                                                                                musicToggle.classList.remove('muted');
-                                                                                                                                                                                                                                                                                                                                                                                                            switchSectionMusic(currentSection);
-                                                                                                                                                                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                                                                                                                                                                                musicToggle.querySelector('i').className = 'fas fa-volume-mute';
-                                                                                                                                                                                                                                                                                                                                                                                                                                            musicToggle.classList.add('muted');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (currentlyPlayingMusic) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        currentlyPlayingMusic.pause();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                window.addEventListener('load', () => {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    setTimeout(() => {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            if (musicEnabled) switchSectionMusic(0);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }, 2000);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-
-        // PAGE TRANSITION WITH TK LOGO
         const pageTransition = document.getElementById('pageTransition');
         const transitionLogo = pageTransition ? pageTransition.querySelector('.transition-logo') : null;
         
