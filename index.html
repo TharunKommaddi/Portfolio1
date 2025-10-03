@@ -3468,7 +3468,6 @@
 
         console.log('✓ Enhanced interactive portfolio loaded!');
 
-
         // BACKGROUND MUSIC SYSTEM - Different music for each section
         const musicToggle = document.getElementById('musicToggle');
         const sectionMusic = {
@@ -3479,7 +3478,8 @@
         };
         
         let currentlyPlayingMusic = null;
-        let musicEnabled = true;
+        let musicEnabled = false;
+        let musicInitialized = false;
         
         Object.values(sectionMusic).forEach(audio => {
             if (audio) audio.volume = 1.0;
@@ -3504,31 +3504,29 @@
             const newMusic = sectionMusic[sectionIndex];
             if (newMusic && newMusic !== currentlyPlayingMusic) {
                 newMusic.volume = 0;
-                newMusic.play().catch(err => console.log('Music blocked'));
-                
-                const fadeIn = setInterval(() => {
-                    if (newMusic.volume < 0.95) {
-                        newMusic.volume += 0.05;
-                    } else {
-                        newMusic.volume = 1.0;
-                        clearInterval(fadeIn);
-                    }
-                }, 50);
-                
-                currentlyPlayingMusic = newMusic;
+                newMusic.play().then(() => {
+                    const fadeIn = setInterval(() => {
+                        if (newMusic.volume < 0.95) {
+                            newMusic.volume += 0.05;
+                        } else {
+                            newMusic.volume = 1.0;
+                            clearInterval(fadeIn);
+                        }
+                    }, 50);
+                    currentlyPlayingMusic = newMusic;
+                }).catch(err => console.log('Music blocked'));
             }
         }
         
         if (musicToggle) {
             musicToggle.addEventListener('click', () => {
-                if (!currentlyPlayingMusic) {
-                    // First click - start music
+                if (!musicInitialized) {
                     musicEnabled = true;
-                    switchSectionMusic(currentSection);
+                    musicInitialized = true;
                     musicToggle.querySelector('i').className = 'fas fa-music';
                     musicToggle.classList.remove('muted');
+                    switchSectionMusic(currentSection);
                 } else {
-                    // Toggle on/off
                     musicEnabled = !musicEnabled;
                     
                     if (musicEnabled) {
@@ -3545,6 +3543,7 @@
                 }
             });
         }
+        
         
         window.addEventListener('load', () => {
             setTimeout(() => {
