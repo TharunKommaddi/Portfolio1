@@ -3046,8 +3046,11 @@
                 
                 // Scroll to top of section
                 nextSectionEl.scrollTop = 0;
-
-                switchSectionMusic(index);
+        
+                // Switch music only if music is enabled and initialized
+                if (musicEnabled && musicInitialized) {
+                    switchSectionMusic(index);
+                }
             });
         }
 
