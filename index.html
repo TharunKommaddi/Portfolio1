@@ -3534,9 +3534,17 @@
                         musicToggle.classList.remove('muted');
                         // Unmute all audio elements
                         Object.values(sectionMusic).forEach(audio => {
-                            if (audio) audio.muted = false;
+                            if (audio) {
+                                audio.muted = false;
+                            }
                         });
-                        switchSectionMusic(currentSection);
+                        // Resume playing music for current section
+                        const currentMusic = sectionMusic[currentSection];
+                        if (currentMusic) {
+                            currentMusic.currentTime = 0;
+                            currentMusic.play().catch(err => console.log('Music play error'));
+                            currentlyPlayingMusic = currentMusic;
+                        }
                     } else {
                         musicToggle.querySelector('i').className = 'fas fa-volume-mute';
                         musicToggle.classList.add('muted');
