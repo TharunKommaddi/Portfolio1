@@ -3482,7 +3482,7 @@
         let musicInitialized = false;
         
         Object.values(sectionMusic).forEach(audio => {
-            if (audio) audio.volume = 1.0;
+            if (audio) audio.volume = 0.25;
         });
         
         function switchSectionMusic(sectionIndex) {
@@ -3495,7 +3495,7 @@
                     } else {
                         currentlyPlayingMusic.pause();
                         currentlyPlayingMusic.currentTime = 0;
-                        currentlyPlayingMusic.volume = 1.0;
+                        currentlyPlayingMusic.volume = 0.25;
                         clearInterval(fadeOut);
                     }
                 }, 50);
@@ -3506,10 +3506,10 @@
                 newMusic.volume = 0;
                 newMusic.play().then(() => {
                     const fadeIn = setInterval(() => {
-                        if (newMusic.volume < 0.95) {
+                        if (newMusic.volume < 0.20) {
                             newMusic.volume += 0.05;
                         } else {
-                            newMusic.volume = 1.0;
+                            newMusic.volume = 0.25;
                             clearInterval(fadeIn);
                         }
                     }, 50);
@@ -3532,13 +3532,21 @@
                     if (musicEnabled) {
                         musicToggle.querySelector('i').className = 'fas fa-music';
                         musicToggle.classList.remove('muted');
+                        // Unmute all audio elements
+                        Object.values(sectionMusic).forEach(audio => {
+                            if (audio) audio.muted = false;
+                        });
                         switchSectionMusic(currentSection);
                     } else {
                         musicToggle.querySelector('i').className = 'fas fa-volume-mute';
                         musicToggle.classList.add('muted');
-                        if (currentlyPlayingMusic) {
-                            currentlyPlayingMusic.pause();
-                        }
+                        // Pause and mute ALL audio elements
+                        Object.values(sectionMusic).forEach(audio => {
+                            if (audio) {
+                                audio.pause();
+                                audio.muted = true;
+                            }
+                        });
                     }
                 }
             });
