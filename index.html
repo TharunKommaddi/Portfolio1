@@ -3482,7 +3482,7 @@
         let musicEnabled = true;
         
         Object.values(sectionMusic).forEach(audio => {
-            if (audio) audio.volume = 0.25;
+            if (audio) audio.volume = 1.0;
         });
         
         function switchSectionMusic(sectionIndex) {
@@ -3495,7 +3495,7 @@
                     } else {
                         currentlyPlayingMusic.pause();
                         currentlyPlayingMusic.currentTime = 0;
-                        currentlyPlayingMusic.volume = 0.25;
+                        currentlyPlayingMusic.volume = 1.0;
                         clearInterval(fadeOut);
                     }
                 }, 50);
@@ -3507,10 +3507,10 @@
                 newMusic.play().catch(err => console.log('Music blocked'));
                 
                 const fadeIn = setInterval(() => {
-                    if (newMusic.volume < 0.2) {
+                    if (newMusic.volume < 0.95) {
                         newMusic.volume += 0.05;
                     } else {
-                        newMusic.volume = 0.25;
+                        newMusic.volume = 1.0;
                         clearInterval(fadeIn);
                     }
                 }, 50);
@@ -3521,17 +3521,26 @@
         
         if (musicToggle) {
             musicToggle.addEventListener('click', () => {
-                musicEnabled = !musicEnabled;
-                
-                if (musicEnabled) {
+                if (!currentlyPlayingMusic) {
+                    // First click - start music
+                    musicEnabled = true;
+                    switchSectionMusic(currentSection);
                     musicToggle.querySelector('i').className = 'fas fa-music';
                     musicToggle.classList.remove('muted');
-                    switchSectionMusic(currentSection);
                 } else {
-                    musicToggle.querySelector('i').className = 'fas fa-volume-mute';
-                    musicToggle.classList.add('muted');
-                    if (currentlyPlayingMusic) {
-                        currentlyPlayingMusic.pause();
+                    // Toggle on/off
+                    musicEnabled = !musicEnabled;
+                    
+                    if (musicEnabled) {
+                        musicToggle.querySelector('i').className = 'fas fa-music';
+                        musicToggle.classList.remove('muted');
+                        switchSectionMusic(currentSection);
+                    } else {
+                        musicToggle.querySelector('i').className = 'fas fa-volume-mute';
+                        musicToggle.classList.add('muted');
+                        if (currentlyPlayingMusic) {
+                            currentlyPlayingMusic.pause();
+                        }
                     }
                 }
             });
